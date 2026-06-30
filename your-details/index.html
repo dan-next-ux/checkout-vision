@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Details | Checkout Vision</title>
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+  </head>
+  <body data-page="your-details">
+    <div class="app-frame">
+      <header class="brand-bar" aria-label="Checkout header">
+        <div class="brand-side">
+          <button class="icon-button" type="button" aria-label="Secure checkout">
+            <img src="/images/secure-m-default.svg" alt="">
+          </button>
+        </div>
+        <a class="brand-logo" href="/signin-register/" aria-label="Next home">
+          <img src="/images/new-next-logo.svg" alt="NEXT">
+        </a>
+        <div class="brand-side brand-side-right no-help">
+          <button class="icon-button bag-button" type="button" aria-label="Bag with 1 item">
+            <img src="/images/shopping-bag-small.svg" alt="">
+            <span class="bag-count">1</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="page-nav" aria-label="Page">
+        <a class="icon-button nav-back" href="/signin-register/" aria-label="Back">
+          <img src="/images/chevron-left-m-default.svg" alt="">
+        </a>
+        <h1>Guest Checkout</h1>
+      </nav>
+
+      <aside class="top-ledger" aria-label="Order total">
+        <div class="content-container">
+          <p>Total: <strong>£29.95</strong> <span>(Incl. £4.95 Delivery)</span></p>
+          <button class="btn btn-small order-jump" type="button">VIEW ORDER</button>
+        </div>
+      </aside>
+
+      <main class="content-area">
+        <div class="content-container details-main">
+          <section class="checkout-step is-active" aria-labelledby="details-title">
+            <div class="step-heading">
+              <h2 id="details-title"><span>1.</span> Your Details</h2>
+              <p>Required Fields <span class="required">*</span></p>
+            </div>
+
+            <form class="details-form" action="/delivery/" method="get" novalidate>
+              <div class="field-row">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input class="text-input" id="email" name="email" type="email" autocomplete="email" required>
+                <p class="field-error">Enter a valid email address.</p>
+              </div>
+
+              <div class="field-row">
+                <label for="first-name">First Name <span class="required">*</span></label>
+                <input class="text-input" id="first-name" name="firstName" type="text" autocomplete="given-name" required>
+                <p class="field-error">Enter your first name.</p>
+              </div>
+
+              <div class="field-row">
+                <label for="last-name">Last Name <span class="required">*</span></label>
+                <input class="text-input" id="last-name" name="lastName" type="text" autocomplete="family-name" required>
+                <p class="field-error">Enter your last name.</p>
+              </div>
+
+              <div class="field-row">
+                <label class="optional-label" for="password"><span>Password</span> <em>Optional</em></label>
+                <input class="text-input" id="password" name="password" type="password" autocomplete="new-password">
+                <p class="helper-text">Enter a password to check out faster next time by creating an account</p>
+              </div>
+
+              <section class="marketing" aria-label="Marketing preferences">
+                <p>
+                  Tick the relevant box to opt out of <strong>NEXT offers</strong>, <strong>updates</strong> and the chance of <strong>exclusive Next Sale access</strong>.
+                </p>
+                <div class="checkbox-grid">
+                  <label><input type="checkbox" name="marketing" value="email"> Email</label>
+                  <label><input type="checkbox" name="marketing" value="sms"> SMS</label>
+                  <label><input type="checkbox" name="marketing" value="post"> Post</label>
+                </div>
+              </section>
+
+              <button class="btn btn-primary" type="submit">CONTINUE</button>
+
+              <p class="preference-note">
+                You can opt out at any time using the unsubscribe link in our messages or by amending your preferences in My Account.<br>
+                To find out more, see our <a href="#">Privacy and Cookie Policy</a>.
+              </p>
+            </form>
+          </section>
+
+          <section class="muted-step">
+            <h2><span>2.</span> Delivery</h2>
+          </section>
+
+          <section class="muted-step">
+            <h2><span>3.</span> Payment</h2>
+          </section>
+
+          <p class="terms-copy details-terms">
+            * By proceeding with your payment, you agree to the <a href="#">Terms and Conditions</a>. To find out how we process your personal data please see our <a href="#">Privacy and Cookie Policy</a>.
+          </p>
+        </div>
+      </main>
+
+      <section class="order-accordion" id="your-order">
+        <div class="content-container">
+          <button class="order-summary-toggle" type="button" aria-expanded="true" aria-controls="order-panel">
+            <span>Your Order</span>
+            <span class="chevron" aria-hidden="true"></span>
+          </button>
+
+          <div class="order-panel" id="order-panel">
+            <div class="order-header">
+              <strong>Item</strong>
+              <strong>Price</strong>
+            </div>
+
+            <article class="order-item">
+              <img src="/images/product-striped-top.png" alt="Pink and white striped long sleeve T-shirt">
+              <div class="item-copy">
+                <h3>Pink/White Striped&nbsp; Long Sleeve T-Shirt</h3>
+                <p class="stock">In Stock</p>
+                <p><span>Size:</span> Small</p>
+                <p><span>Quantity:</span> 1</p>
+              </div>
+              <p class="item-price">£25.00</p>
+            </article>
+
+            <div class="order-total">
+              <strong>Total (Incl. Delivery: £4.95)</strong>
+              <strong>£29.95</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="checkout-footer">
+        <div class="content-container">
+          <p>©2026 Next. All Rights Reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/scripts/script.js?v=order-complete-1"></script>
+  </body>
+</html>

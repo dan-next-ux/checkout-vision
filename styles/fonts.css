@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "Next Display Text";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display-text/next-display-text-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Next Display Text";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display-text/next-display-text-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Next Display Text";
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display-text/next-display-text-800.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Next Display";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display/next-display-300.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Next Display";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display/next-display-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Next Display";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display/next-display-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Next Display";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display/next-display-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Next Display";
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/next-display/next-display-800.woff2") format("woff2");
+}

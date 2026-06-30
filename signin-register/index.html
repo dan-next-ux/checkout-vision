@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign In / Register | Checkout Vision</title>
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+  </head>
+  <body data-page="signin-register">
+    <div class="app-frame">
+      <header class="brand-bar" aria-label="Checkout header">
+        <div class="brand-side">
+          <button class="icon-button" type="button" aria-label="Secure checkout">
+            <img src="/images/secure-m-default.svg" alt="">
+          </button>
+        </div>
+        <a class="brand-logo" href="/signin-register/" aria-label="Next home">
+          <img src="/images/new-next-logo.svg" alt="NEXT">
+        </a>
+        <div class="brand-side brand-side-right">
+          <a class="help-link" href="#">Help</a>
+          <span class="brand-divider" aria-hidden="true"></span>
+          <button class="icon-button bag-button" type="button" aria-label="Bag with 1 item">
+            <img src="/images/shopping-bag-small.svg" alt="">
+            <span class="bag-count">1</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="page-nav" aria-label="Page">
+        <button class="icon-button nav-back" type="button" aria-label="Back">
+          <img src="/images/chevron-left-m-default.svg" alt="">
+        </button>
+        <h1>Sign In / Register</h1>
+      </nav>
+
+      <main class="content-area">
+        <div class="content-container signin-main">
+          <form class="signin-card" novalidate>
+            <section class="intro-copy" aria-labelledby="signin-heading">
+              <h2 id="signin-heading">Enter your email address or customer number to continue</h2>
+              <p>We'll check if you already have an account</p>
+            </section>
+
+            <div class="field-row">
+              <label class="visually-hidden" for="signin-identifier">Email address or customer number</label>
+              <input class="text-input" id="signin-identifier" name="identifier" type="text" autocomplete="email" aria-describedby="signin-error">
+              <p class="field-error" id="signin-error">Enter your email address or customer number to continue.</p>
+            </div>
+
+            <button class="btn btn-primary" type="submit">CONTINUE</button>
+          </form>
+
+          <div class="or-divider" aria-hidden="true">
+            <span></span>
+            <strong>OR</strong>
+            <span></span>
+          </div>
+
+          <section class="guest-panel" aria-label="Guest checkout options">
+            <a class="btn btn-secondary" href="/your-details/">CHECKOUT AS GUEST</a>
+
+            <div class="express-block">
+              <h2>Checkout now with express payment</h2>
+              <button class="apple-pay-button" type="button">
+                <span>Buy with</span>
+                <strong><span aria-hidden="true"></span>Pay</strong>
+              </button>
+            </div>
+
+            <p class="terms-copy">
+              By proceeding with your payment, you agree to the <a href="#">Terms and Conditions</a>. To find out how we process your personal data please see our <a href="#">Privacy and Cookie Policy</a>.
+            </p>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="/scripts/script.js?v=order-complete-1"></script>
+  </body>
+</html>

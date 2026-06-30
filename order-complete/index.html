@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order Complete | Checkout Vision</title>
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+  </head>
+  <body data-page="order-complete">
+    <div class="app-frame order-complete-frame">
+      <header class="store-header" aria-label="Next header">
+        <div class="store-brand-bar">
+          <div class="store-side">
+            <button class="icon-button store-icon lock-icon" type="button" aria-label="Secure"></button>
+            <button class="icon-button store-icon heart-icon" type="button" aria-label="Favourites"></button>
+          </div>
+          <a class="brand-logo" href="/signin-register/" aria-label="Next home">
+            <img src="/images/new-next-logo.svg" alt="NEXT">
+          </a>
+          <div class="store-side store-side-right">
+            <button class="icon-button store-icon account-icon" type="button" aria-label="Account"></button>
+            <button class="icon-button bag-button" type="button" aria-label="Bag empty">
+              <img src="/images/shopping-bag-small.svg" alt="">
+              <span class="bag-count">0</span>
+            </button>
+          </div>
+        </div>
+        <nav class="store-tabs" aria-label="Departments">
+          <a href="#">WOMEN</a>
+          <a href="#">MEN</a>
+          <a href="#">BOYS</a>
+          <a href="#">GIRLS</a>
+          <a href="#">HOME</a>
+          <a href="#">BABY</a>
+          <a href="#">HOLIDAY</a>
+        </nav>
+      </header>
+
+      <main class="order-complete-main content-container">
+        <section class="order-complete-hero" aria-labelledby="order-complete-title">
+          <div class="complete-row">
+            <span class="complete-tick" aria-hidden="true"></span>
+            <div>
+              <div class="complete-title-row">
+                <h1 id="order-complete-title">ORDER COMPLETE</h1>
+                <button class="link-button" type="button">Show Details</button>
+              </div>
+              <p>Confirmation sent to <span data-complete-email>alex_smith32@gmail.com</span></p>
+            </div>
+          </div>
+
+          <aside class="delivery-offer">
+            <span class="delivery-offer-icon" aria-hidden="true"></span>
+            <p>Place another order within <strong>30 minutes</strong> and get free delivery. <a href="#">Terms and Conditions apply</a></p>
+          </aside>
+        </section>
+
+        <form class="signup-panel" aria-labelledby="signup-title" novalidate>
+          <h2 id="signup-title">Want to track your orders?</h2>
+          <p>Enter a password to set up an account</p>
+
+          <div class="password-row">
+            <label class="visually-hidden" for="complete-password">Enter a Password</label>
+            <input class="text-input" id="complete-password" name="password" type="password" autocomplete="new-password" placeholder="Enter a Password">
+            <button class="btn btn-secondary" type="button">SHOW</button>
+          </div>
+          <p class="helper-text">Password must be 6-12 characters and include letters and numbers.</p>
+
+          <div class="complete-marketing">
+            <p>Tick the relevant box to opt out of <strong>NEXT</strong> offers, updates and the chance of exclusive Next Sale access.</p>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="completeMarketing" value="email"> Email</label>
+              <label><input type="checkbox" name="completeMarketing" value="sms"> SMS</label>
+              <label><input type="checkbox" name="completeMarketing" value="post"> Post</label>
+            </div>
+          </div>
+
+          <p class="complete-terms">By clicking ‘Great, Sign Me Up’ you agree to the Next <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy and Cookie Policy</a>.</p>
+          <button class="btn btn-primary" type="button">GREAT, SIGN ME UP</button>
+        </form>
+
+        <section class="recommendations" aria-labelledby="recommendations-title">
+          <h2 id="recommendations-title">You May Also Like</h2>
+          <div class="recommendation-row">
+            <article class="recommendation-card">
+              <img src="/images/product-striped-top.png" alt="Monochrome striped rib halter neck vest">
+              <strong>£17</strong>
+              <p>Next Monochrome Striped Rib Halter Neck Vest</p>
+            </article>
+            <article class="recommendation-card">
+              <img src="/images/product-striped-top.png" alt="White relaxed boxy elbow length crew neck T-shirt">
+              <strong>£10</strong>
+              <p>Next White Relaxed Boxy Elbow Length Crew Neck T-Shirt</p>
+            </article>
+            <article class="recommendation-card">
+              <img src="/images/product-striped-top.png" alt="Gold tone floral necklace">
+              <strong>£12</strong>
+              <p>Next Gold Tone Floral 3 Row Necklace</p>
+            </article>
+            <article class="recommendation-card">
+              <img src="/images/product-striped-top.png" alt="White ruched tie detail top">
+              <strong>£10</strong>
+              <p>Next White Ruched Tie Detail Cotton Top</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="promo-tile" aria-label="Boys bedroom promotion">
+          <div>
+            <h2>BOYS' BEDROOM</h2>
+            <p>Pack it with personality</p>
+          </div>
+          <a class="btn btn-secondary" href="#">SHOP NOW</a>
+        </section>
+      </main>
+
+      <footer class="checkout-footer">
+        <div class="content-container">
+          <p>©2026 Next. All Rights Reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/scripts/script.js?v=order-complete-1"></script>
+  </body>
+</html>

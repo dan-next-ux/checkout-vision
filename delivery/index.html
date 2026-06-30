@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delivery | Checkout Vision</title>
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+  </head>
+  <body data-page="delivery">
+    <div class="app-frame">
+      <header class="brand-bar" aria-label="Checkout header">
+        <div class="brand-side">
+          <button class="icon-button" type="button" aria-label="Secure checkout">
+            <img src="/images/secure-m-default.svg" alt="">
+          </button>
+        </div>
+        <a class="brand-logo" href="/signin-register/" aria-label="Next home">
+          <img src="/images/new-next-logo.svg" alt="NEXT">
+        </a>
+        <div class="brand-side brand-side-right no-help">
+          <button class="icon-button bag-button" type="button" aria-label="Bag with 1 item">
+            <img src="/images/shopping-bag-small.svg" alt="">
+            <span class="bag-count">1</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="page-nav" aria-label="Page">
+        <a class="icon-button nav-back" href="/your-details/" aria-label="Back">
+          <img src="/images/chevron-left-m-default.svg" alt="">
+        </a>
+        <h1>Guest Checkout</h1>
+      </nav>
+
+      <aside class="top-ledger" aria-label="Order total">
+        <div class="content-container">
+          <p>Total: <strong>£29.95</strong> <span>(Incl. £4.95 Delivery)</span></p>
+          <button class="btn btn-small order-jump" type="button">VIEW ORDER</button>
+        </div>
+      </aside>
+
+      <main class="content-area">
+        <div class="content-container details-main">
+          <section class="completed-step" aria-labelledby="details-summary-title">
+            <div class="step-heading">
+              <h2 id="details-summary-title"><span>1.</span> Your Details</h2>
+              <p>Required Fields <span class="required">*</span></p>
+            </div>
+            <div class="completed-step-body">
+              <div>
+                <p data-summary-email>alex_smith@gmail.com</p>
+                <p data-summary-name>Alex Smith</p>
+              </div>
+              <a href="/your-details/">Change</a>
+            </div>
+          </section>
+
+          <section class="checkout-step delivery-step is-active" aria-labelledby="delivery-title">
+            <h2 id="delivery-title"><span>2.</span> Delivery</h2>
+
+            <div class="delivery-tabs" role="radiogroup" aria-label="Delivery type">
+              <label class="delivery-option is-selected">
+                <input type="radio" name="delivery-type" value="home" checked>
+                <span class="radio-dot" aria-hidden="true"></span>
+                <span><strong>Home</strong><small>£4.95</small></span>
+              </label>
+              <label class="delivery-option">
+                <input type="radio" name="delivery-type" value="collection">
+                <span class="radio-dot" aria-hidden="true"></span>
+                <span><strong>Collection</strong><small>FREE</small></span>
+              </label>
+              <label class="delivery-option">
+                <input type="radio" name="delivery-type" value="parcelshop">
+                <span class="radio-dot" aria-hidden="true"></span>
+                <span><strong>Parcelshop</strong><small>£3.50</small></span>
+              </label>
+            </div>
+
+            <form class="delivery-form" action="/delivery/" method="get" novalidate data-delivery-state="address">
+              <p class="delivery-question">Where would you like us to delivery your order?</p>
+
+              <div class="field-row">
+                <label for="address-line-1">Address Line 1 <span class="required">*</span></label>
+                <div class="field-with-icon address-lookup" data-address-lookup>
+                  <input class="text-input" id="address-line-1" name="addressLine1" type="text" autocomplete="off" placeholder="Start typing your address and pick from the list" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="address-suggestions" required>
+                  <button class="field-icon-button" type="button" aria-label="Search address">
+                    <img src="/images/search.svg" alt="">
+                  </button>
+                  <div class="address-suggestions" id="address-suggestions" role="listbox" aria-label="Address matches"></div>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <label for="address-line-2">Address Line 2 <span class="required">*</span></label>
+                <input class="text-input" id="address-line-2" name="addressLine2" type="text" autocomplete="address-line2" required>
+              </div>
+
+              <div class="field-grid">
+                <div class="field-row">
+                  <label for="town-city">Town/City <span class="required">*</span></label>
+                  <input class="text-input" id="town-city" name="townCity" type="text" autocomplete="address-level2" required>
+                </div>
+
+                <div class="field-row">
+                  <label for="postcode">Postcode <span class="required">*</span></label>
+                  <input class="text-input" id="postcode" name="postcode" type="text" autocomplete="postal-code" required>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <label for="phone-number">Phone Number <span class="required">*</span></label>
+                <input class="text-input" id="phone-number" name="phoneNumber" type="tel" autocomplete="tel" required>
+                <p class="helper-text">This allows us to send you order updates. You can also use this number to receive One Time Passcodes for quicker sign in in the future.</p>
+              </div>
+
+              <button class="btn btn-primary" type="submit">CONTINUE</button>
+            </form>
+
+            <div class="delivery-review" data-delivery-state="loading" hidden>
+              <div class="deliver-to">
+                <strong>Deliver to:</strong>
+                <p data-deliver-to>12 Mill Hill, Enderby, Leicester, LE19 4AD</p>
+              </div>
+
+              <section class="parcel-loading" aria-label="Loading delivery dates" aria-live="polite">
+                <div class="parcel-bar skeleton-group">
+                  <span class="skeleton skeleton-square"></span>
+                  <span class="skeleton skeleton-title"></span>
+                  <span class="skeleton skeleton-small"></span>
+                  <span class="chevron muted-chevron" aria-hidden="true"></span>
+                </div>
+
+                <div class="date-loading">
+                  <span class="skeleton skeleton-heading"></span>
+                  <div class="skeleton-date-row" aria-hidden="true">
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                  </div>
+                  <span class="skeleton skeleton-line skeleton-line-long"></span>
+                  <span class="skeleton skeleton-line skeleton-line-short"></span>
+                </div>
+
+                <div class="skeleton-button-wrap">
+                  <span class="skeleton skeleton-button"></span>
+                </div>
+              </section>
+            </div>
+
+            <div class="delivery-review" data-delivery-state="dates" hidden>
+              <div class="deliver-to">
+                <strong>Deliver to:</strong>
+                <p data-deliver-to>12 Mill Hill, Enderby, Leicester, LE19 4AD</p>
+              </div>
+
+              <section class="parcel-picker" aria-labelledby="parcel-title">
+                <button class="parcel-bar parcel-summary" type="button" aria-expanded="true">
+                  <span class="parcel-label">
+                    <span class="parcel-home-icon" aria-hidden="true"></span>
+                    <strong id="parcel-title">Parcel 1 of 1</strong>
+                    <small>(1 item)</small>
+                  </span>
+                  <span class="chevron muted-chevron" aria-hidden="true"></span>
+                </button>
+
+                <div class="date-picker-panel">
+                  <h3>Select Your Delivery Date <span class="required">*</span></h3>
+                  <div class="delivery-date-row" role="radiogroup" aria-label="Delivery date">
+                    <label class="date-chip is-selected"><input type="radio" name="deliveryDate" value="wed-12" checked><span>Wed</span><small>12th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="thu-13"><span>Thu</span><small>13th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="fri-14"><span>Fri</span><small>14th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="sat-15"><span>Sat</span><small>15th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="sun-16"><span>Sun</span><small>16th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="mon-17"><span>Mon</span><small>17th</small></label>
+                  </div>
+                  <p class="delivery-date-note">Delivered anytime between 8am - 8pm, a 2 hour time slot will be confirmed to you on the morning of delivery.</p>
+                </div>
+
+                <div class="date-continue">
+                  <button class="btn btn-primary" type="button" data-date-continue>CONTINUE</button>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section class="muted-step">
+            <h2><span>3.</span> Payment</h2>
+          </section>
+
+          <p class="terms-copy details-terms">
+            * By proceeding with your payment, you agree to the <a href="#">Terms and Conditions</a>. To find out how we process your personal data please see our <a href="#">Privacy and Cookie Policy</a>.
+          </p>
+        </div>
+      </main>
+
+      <section class="order-accordion" id="your-order">
+        <div class="content-container">
+          <button class="order-summary-toggle" type="button" aria-expanded="true" aria-controls="order-panel">
+            <span>Your Order</span>
+            <span class="chevron" aria-hidden="true"></span>
+          </button>
+
+          <div class="order-panel" id="order-panel">
+            <div class="order-header">
+              <strong>Item</strong>
+              <strong>Price</strong>
+            </div>
+
+            <article class="order-item">
+              <img src="/images/product-striped-top.png" alt="Pink and white striped long sleeve T-shirt">
+              <div class="item-copy">
+                <h3>Pink/White Striped&nbsp; Long Sleeve T-Shirt</h3>
+                <p class="stock">In Stock</p>
+                <p><span>Size:</span> Small</p>
+                <p><span>Quantity:</span> 1</p>
+              </div>
+              <p class="item-price">£25.00</p>
+            </article>
+
+            <div class="order-total">
+              <strong>Total (Incl. Delivery: £4.95)</strong>
+              <strong>£29.95</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="checkout-footer">
+        <div class="content-container">
+          <p>©2026 Next. All Rights Reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/scripts/script.js?v=order-complete-1"></script>
+  </body>
+</html>

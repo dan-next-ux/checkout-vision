@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment | Checkout Vision</title>
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+  </head>
+  <body data-page="payment">
+    <div class="app-frame">
+      <header class="brand-bar" aria-label="Checkout header">
+        <div class="brand-side">
+          <button class="icon-button" type="button" aria-label="Secure checkout">
+            <img src="/images/secure-m-default.svg" alt="">
+          </button>
+        </div>
+        <a class="brand-logo" href="/signin-register/" aria-label="Next home">
+          <img src="/images/new-next-logo.svg" alt="NEXT">
+        </a>
+        <div class="brand-side brand-side-right no-help">
+          <button class="icon-button bag-button" type="button" aria-label="Bag with 1 item">
+            <img src="/images/shopping-bag-small.svg" alt="">
+            <span class="bag-count">1</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="page-nav" aria-label="Page">
+        <a class="icon-button nav-back" href="/delivery/" aria-label="Back">
+          <img src="/images/chevron-left-m-default.svg" alt="">
+        </a>
+        <h1>Guest Checkout</h1>
+      </nav>
+
+      <aside class="top-ledger" aria-label="Order total">
+        <div class="content-container">
+          <p>Total: <strong>£29.95</strong> <span>(Incl. £4.95 Delivery)</span></p>
+          <button class="btn btn-small order-jump" type="button">VIEW ORDER</button>
+        </div>
+      </aside>
+
+      <main class="content-area">
+        <div class="content-container details-main">
+          <section class="completed-step" aria-labelledby="details-summary-title">
+            <div class="step-heading">
+              <h2 id="details-summary-title"><span>1.</span> Your Details</h2>
+              <p>Required Fields <span class="required">*</span></p>
+            </div>
+            <div class="completed-step-body">
+              <div>
+                <p data-summary-email>alex_smith@gmail.com</p>
+                <p data-summary-name>Alex Smith</p>
+              </div>
+              <a href="/your-details/">Change</a>
+            </div>
+          </section>
+
+          <section class="completed-step" aria-labelledby="delivery-summary-title">
+            <div class="step-heading compact-heading">
+              <h2 id="delivery-summary-title"><span>2.</span> Delivery</h2>
+            </div>
+            <div class="completed-step-body">
+              <div>
+                <p>12 Mill Hill, Enderby, Leicester, LE19 4AD</p>
+                <p>Wednesday 12th July</p>
+              </div>
+              <a href="/delivery/">Change</a>
+            </div>
+          </section>
+
+          <section class="checkout-step payment-step is-active" aria-labelledby="payment-title">
+            <h2 id="payment-title"><span>3.</span> Payment</h2>
+
+            <div class="payment-methods" role="radiogroup" aria-label="Payment methods">
+              <button class="payment-method credit-method" type="button" role="radio" aria-checked="false" aria-expanded="false" data-payment-method="card">
+                <span class="payment-method-main">
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="payment-copy">
+                    <strong>Credit / Debit Card</strong>
+                  </span>
+                </span>
+                <span class="card-icon" aria-hidden="true"></span>
+              </button>
+
+              <section class="card-panel" aria-label="Credit / Debit Card details" hidden>
+                <div class="card-panel-header">
+                  <span class="payment-method-main">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="payment-copy inline-copy">
+                      <strong>Credit / Debit Card</strong>
+                      <small>(2 Saved Cards)</small>
+                    </span>
+                  </span>
+                  <span class="card-icon" aria-hidden="true"></span>
+                </div>
+
+                <div class="card-frame">
+                  <label class="card-checkbox is-checked">
+                    <input type="checkbox" checked>
+                    <span aria-hidden="true"></span>
+                    Use delivery address as billing address
+                  </label>
+
+                  <div class="card-logos" aria-label="Accepted cards">
+                    <span class="card-logo visa">VISA</span>
+                    <span class="card-logo mastercard"><i></i><i></i></span>
+                    <span class="card-logo amex">AMEX</span>
+                    <span class="card-logo maestro"><i></i><i></i><em>maestro</em></span>
+                    <span class="card-logo diners">Diners Club</span>
+                  </div>
+
+                  <div class="field-row">
+                    <label for="card-number">Card Number <span class="required">*</span></label>
+                    <input class="text-input card-input" id="card-number" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number">
+                  </div>
+
+                  <div class="field-row">
+                    <label for="cardholder-name">Cardholder’s Name <span class="required">*</span></label>
+                    <input class="text-input card-input" id="cardholder-name" name="cardholderName" type="text" autocomplete="cc-name">
+                  </div>
+
+                  <div class="card-field-grid">
+                    <div class="field-row">
+                      <label for="expiry-date">Expiry Date <span class="required">*</span></label>
+                      <input class="text-input card-input" id="expiry-date" name="expiryDate" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY">
+                    </div>
+
+                    <div class="field-row">
+                      <label class="security-label" for="security-code">Security Code <span class="help-dot" aria-hidden="true">?</span></label>
+                      <input class="text-input card-input" id="security-code" name="securityCode" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC">
+                    </div>
+                  </div>
+
+                  <label class="card-checkbox">
+                    <input type="checkbox">
+                    <span aria-hidden="true"></span>
+                    Save this card for faster payment
+                  </label>
+
+                  <p class="payment-note">We only accept payments from cards that are registered at your billing address.</p>
+
+                  <button class="btn btn-primary" type="button" data-pay-now>PAY NOW</button>
+                </div>
+              </section>
+
+              <button class="payment-method" type="button" role="radio" aria-checked="false">
+                <span class="payment-method-main">
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="payment-copy">
+                    <strong>nextpay</strong>
+                    <small>Shop Now, Pay Later*</small>
+                    <small>24.9% APR Representative variable</small>
+                  </span>
+                </span>
+                <span class="payment-badge">10% off‡</span>
+              </button>
+
+              <button class="payment-method" type="button" role="radio" aria-checked="false">
+                <span class="payment-method-main">
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="payment-copy">
+                    <strong>pay in 3</strong>
+                    <small>3 payments, 3 months*</small>
+                    <small>29.9% APR Representative variable</small>
+                  </span>
+                </span>
+                <span class="payment-badge">10% off‡</span>
+              </button>
+
+              <button class="payment-method" type="button" role="radio" aria-checked="false">
+                <span class="payment-method-main">
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="payment-copy"><strong>Paypal*</strong></span>
+                </span>
+                <span class="paypal-mark">P</span>
+              </button>
+
+              <button class="payment-method" type="button" role="radio" aria-checked="false">
+                <span class="payment-method-main">
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="payment-copy"><strong>Google Pay</strong></span>
+                </span>
+                <span class="gpay-mark">G Pay</span>
+              </button>
+
+              <button class="payment-method" type="button" role="radio" aria-checked="false">
+                <span class="payment-method-main">
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="payment-copy"><strong>Giftcard / eVoucher</strong></span>
+                </span>
+                <span class="gift-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <div class="credit-terms">
+              <p>We will request payment for the full amount on completion of your order. By selecting a payment option you confirm that you have read, understood and accept our <a href="#">Terms &amp; Conditions</a>, <a href="#">Returns Policy</a> and <a href="#">Privacy Policy</a>.</p>
+              <p>*Credit subject to status. UK residents aged 18 and over. See our <a href="#">Terms &amp; Conditions</a> for more information. Please note only one credit product is available per customer.</p>
+              <p>‡This offer is only available to customers opening a credit account and may be withdrawn at any time.</p>
+            </div>
+          </section>
+
+          <p class="terms-copy details-terms">
+            * By proceeding with your payment, you agree to the <a href="#">Terms and Conditions</a>. To find out how we process your personal data please see our <a href="#">Privacy and Cookie Policy</a>.
+          </p>
+        </div>
+      </main>
+
+      <section class="order-accordion" id="your-order">
+        <div class="content-container">
+          <button class="order-summary-toggle" type="button" aria-expanded="true" aria-controls="order-panel">
+            <span>Your Order</span>
+            <span class="chevron" aria-hidden="true"></span>
+          </button>
+
+          <div class="order-panel" id="order-panel">
+            <div class="order-header">
+              <strong>Item</strong>
+              <strong>Price</strong>
+            </div>
+
+            <article class="order-item">
+              <img src="/images/product-striped-top.png" alt="Pink and white striped long sleeve T-shirt">
+              <div class="item-copy">
+                <h3>Pink/White Striped&nbsp; Long Sleeve T-Shirt</h3>
+                <p class="stock">In Stock</p>
+                <p><span>Size:</span> Small</p>
+                <p><span>Quantity:</span> 1</p>
+              </div>
+              <p class="item-price">£25.00</p>
+            </article>
+
+            <div class="order-total">
+              <strong>Total (Incl. Delivery: £4.95)</strong>
+              <strong>£29.95</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="checkout-footer">
+        <div class="content-container">
+          <p>©2026 Next. All Rights Reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/scripts/script.js?v=order-complete-1"></script>
+  </body>
+</html>
