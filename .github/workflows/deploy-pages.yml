@@ -1,0 +1,103 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build GitHub Pages artifact
+        env:
+          SITE_BASE: /${{ github.event.repository.name }}
+        run: |
+          python3 <<'PY'
+          import os
+          import pathlib
+          import re
+          import shutil
+
+          source = pathlib.Path(".")
+          output = pathlib.Path("_site")
+          base = os.environ["SITE_BASE"].rstrip("/")
+          route_prefixes = (
+              "signin-register",
+              "your-details",
+              "delivery",
+              "payment",
+              "order-complete",
+              "payment-loading",
+              "images",
+              "styles",
+              "scripts",
+              "fonts",
+          )
+          pattern = re.compile(r'(?P<quote>["\'])/(?P<path>(?:' + "|".join(route_prefixes) + r')(?:/[^"\']*)?)(?P=quote)')
+
+          if output.exists():
+              shutil.rmtree(output)
+
+          def ignore(directory, names):
+              return {
+                  name for name in names
+                  if name in {".git", ".github", "_site", ".DS_Store"}
+              }
+
+          shutil.copytree(source, output, ignore=ignore)
+          (output / ".nojekyll").write_text("", encoding="utf-8")
+
+          for path in output.rglob("*"):
+              if path.suffix not in {".html", ".css", ".js"}:
+                  continue
+
+              content = path.read_text(encoding="utf-8")
+              content = pattern.sub(lambda match: f'{match.group("quote")}{base}/{match.group("path")}{match.group("quote")}', content)
+              path.write_text(content, encoding="utf-8")
+          PY
+
+      - name: Verify static site files
+        run: |
+          test -f _site/index.html
+          test -f _site/signin-register/index.html
+          test -f _site/your-details/index.html
+          test -f _site/delivery/index.html
+          test -f _site/payment/index.html
+          test -f _site/order-complete/index.html
+          test -f _site/styles/styles.css
+          test -f _site/scripts/script.js
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
