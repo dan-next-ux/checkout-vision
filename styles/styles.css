@@ -283,7 +283,7 @@ a {
   background: var(--action-default-enabled-background-color);
   color: var(--text-primary);
   font-family: "Next Display Text", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 21px;
 }
 
