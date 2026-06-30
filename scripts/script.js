@@ -13,6 +13,30 @@
     return input.value.trim().length > 0;
   }
 
+  function scrollToStep(selector) {
+    const target = document.querySelector(selector);
+    if (!target) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function setStepScrollTarget(target) {
+    sessionStorage.setItem("checkoutScrollTarget", target);
+  }
+
+  function consumeStepScrollTarget(target, selector) {
+    if (sessionStorage.getItem("checkoutScrollTarget") !== target) {
+      return;
+    }
+
+    sessionStorage.removeItem("checkoutScrollTarget");
+    scrollToStep(selector);
+  }
+
   function initOrderControls() {
     const orderAccordion = document.querySelector(".order-accordion");
     const orderToggle = document.querySelector(".order-summary-toggle");
@@ -83,6 +107,7 @@
       const lastName = document.querySelector("#last-name").value.trim();
       sessionStorage.setItem("checkoutEmail", email.value.trim() || "alex_smith@gmail.com");
       sessionStorage.setItem("checkoutName", `${firstName} ${lastName}`.trim() || "Alex Smith");
+      setStepScrollTarget("delivery");
       window.location.href = "/delivery/";
     });
   }
@@ -246,9 +271,11 @@
         window.history.replaceState({}, "", "/delivery/");
         setDeliveryAddressLabel(selectedAddressLabel());
         showDeliveryState("loading");
+        scrollToStep(".delivery-step");
         deliveryTimer = window.setTimeout(() => {
           showDeliveryState("dates");
           initDatePicker();
+          scrollToStep(".delivery-step");
         }, 2000);
       });
     }
@@ -259,6 +286,8 @@
       showDeliveryState("dates");
       initDatePicker();
     }
+
+    consumeStepScrollTarget("delivery", ".delivery-step");
   }
 
   function initDatePicker() {
@@ -272,6 +301,7 @@
     const dateContinue = document.querySelector("[data-date-continue]");
     if (dateContinue) {
       dateContinue.addEventListener("click", () => {
+        setStepScrollTarget("payment");
         window.location.href = "/payment/";
       });
     }
@@ -340,6 +370,8 @@
         window.location.href = "/order-complete/";
       });
     }
+
+    consumeStepScrollTarget("payment", ".payment-step");
   }
 
   function initOrderComplete() {
