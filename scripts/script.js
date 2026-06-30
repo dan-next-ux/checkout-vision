@@ -350,6 +350,7 @@
       cardButton.setAttribute("aria-expanded", "true");
       cardPanel.hidden = false;
       cardPanel.querySelector("input")?.focus();
+      scrollToStep(".card-panel");
     }
 
     paymentMethods.forEach((method) => {
