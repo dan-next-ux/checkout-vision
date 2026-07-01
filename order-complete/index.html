@@ -1,129 +1,161 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Order Complete | Checkout Vision</title>
-    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/styles/fonts.css">
-    <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
-    <link rel="stylesheet" href="/styles/styles.css">
-  </head>
-  <body data-page="order-complete">
-    <div class="app-frame order-complete-frame">
-      <header class="store-header" aria-label="Next header">
-        <div class="store-brand-bar">
-          <div class="store-side">
-            <button class="icon-button store-icon lock-icon" type="button" aria-label="Secure"></button>
-            <button class="icon-button store-icon heart-icon" type="button" aria-label="Favourites"></button>
-          </div>
-          <a class="brand-logo" href="/signin-register/" aria-label="Next home">
-            <img src="/images/new-next-logo.svg" alt="NEXT">
-          </a>
-          <div class="store-side store-side-right">
-            <button class="icon-button store-icon account-icon" type="button" aria-label="Account"></button>
-            <button class="icon-button bag-button" type="button" aria-label="Bag empty">
-              <img src="/images/shopping-bag-small.svg" alt="">
-              <span class="bag-count">0</span>
-            </button>
-          </div>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Complete | Checkout Vision</title>
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/fonts.css">
+  <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
+  <link rel="stylesheet" href="/styles/styles.css?v=checkout-2">
+</head>
+
+<body data-page="order-complete">
+  <div class="app-frame order-complete-frame">
+    <header class="store-header" aria-label="Next header">
+      <div class="store-brand-bar">
+        <div class="store-side">
+          <button class="icon-button" type="button" aria-label="Secure"><svg xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24">
+              <g id="account-m-default">
+                <path id="default" fill-rule="evenodd"
+                  d="M17.5 7.5c0 3.04-2.46 5.5-5.5 5.5s-5.5-2.46-5.5-5.5S8.96 2 12 2s5.5 2.46 5.5 5.5Zm-1.25 0A4.26 4.26 0 0 0 12 3.25 4.26 4.26 0 0 0 7.75 7.5 4.26 4.26 0 0 0 12 11.75a4.26 4.26 0 0 0 4.25-4.25ZM2 19c0-2.21 1.79-4 4-4h12c2.21 0 4 1.79 4 4v3H2v-3Zm1.25 0v1.75h17.5V19c0-1.52-1.23-2.75-2.75-2.75H6c-1.52 0-2.75 1.23-2.75 2.75Z"
+                  clip-rule="evenodd" />
+              </g>
+            </svg></button>
+          <button class="icon-button" type="button" aria-label="Favourites"><svg xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24">
+              <g id="favourite-m-default">
+                <path id="default"
+                  d="M6.174 3.25c1.24 0 2.4.49 3.27 1.36l1.66 1.66.88.88.88-.88 1.66-1.66a4.59 4.59 0 0 1 3.27-1.35c1.24 0 2.4.48 3.27 1.35.87.87 1.35 2.03 1.36 3.26 0 1.24-.49 2.4-1.36 3.28l-9.08 9.08-9.08-9.08c-1.8-1.8-1.8-4.74 0-6.54.87-.87 2.03-1.35 3.27-1.36Zm0-1.25c-1.5 0-3.01.58-4.15 1.73a5.873 5.873 0 0 0 0 8.3l9.97 9.97 9.97-9.97a5.898 5.898 0 0 0 1.73-4.15c0-1.5-.58-3.01-1.73-4.15A5.878 5.878 0 0 0 17.804 2c-1.5 0-3.01.57-4.15 1.72l-1.66 1.66-1.66-1.66A5.893 5.893 0 0 0 6.174 2Z" />
+              </g>
+            </svg></button>
         </div>
-        <nav class="store-tabs" aria-label="Departments">
-          <a href="#">WOMEN</a>
-          <a href="#">MEN</a>
-          <a href="#">BOYS</a>
-          <a href="#">GIRLS</a>
-          <a href="#">HOME</a>
-          <a href="#">BABY</a>
-          <a href="#">HOLIDAY</a>
-        </nav>
-      </header>
+        <a class="brand-logo" href="/signin-register/" aria-label="Next home">
+          <img src="/images/new-next-logo.svg" alt="NEXT">
+        </a>
+        <div class="store-side store-side-right">
+          <button class="icon-button" type="button" aria-label="Search"><svg xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24">
+              <g id="search-m-default">
+                <path id="default"
+                  d="m22 21.11-6.78-6.776a7.483 7.483 0 0 0-.42-10.135 7.486 7.486 0 0 0-5.302-2.2c-1.92 0-3.84.73-5.3 2.2a7.495 7.495 0 0 0 0 10.604 7.486 7.486 0 0 0 5.3 2.2c1.72 0 3.44-.6 4.841-1.78L21.119 22l.881-.88v-.01ZM9.498 15.743a6.21 6.21 0 0 1-4.42-1.83 6.205 6.205 0 0 1-1.83-4.417c0-1.67.65-3.239 1.83-4.418a6.213 6.213 0 0 1 4.42-1.829c1.67 0 3.24.65 4.421 1.83a6.205 6.205 0 0 1 1.83 4.417c0 1.67-.65 3.238-1.83 4.418a6.213 6.213 0 0 1-4.42 1.829Z" />
+              </g>
+            </svg>
+          </button>
+          <button class="icon-button bag-button" type="button" aria-label="Bag empty">
+            <img src="/images/shopping-bag-small.svg" alt="">
+            <span class="bag-count">0</span>
+          </button>
+        </div>
+      </div>
+      <nav class="store-tabs" aria-label="Departments">
+        <a href="#">WOMEN</a>
+        <a href="#">MEN</a>
+        <a href="#">BOYS</a>
+        <a href="#">GIRLS</a>
+        <a href="#">HOME</a>
+        <a href="#">BABY</a>
+        <a href="#">HOLIDAY</a>
+      </nav>
+    </header>
 
-      <main class="order-complete-main content-container">
-        <section class="order-complete-hero" aria-labelledby="order-complete-title">
-          <div class="complete-row">
-            <span class="complete-tick" aria-hidden="true"></span>
-            <div>
-              <div class="complete-title-row">
-                <h1 id="order-complete-title">ORDER COMPLETE</h1>
-                <button class="link-button" type="button">Show Details</button>
-              </div>
-              <p>Confirmation sent to <span data-complete-email>alex_smith32@gmail.com</span></p>
-            </div>
-          </div>
-
-          <aside class="delivery-offer">
-            <span class="delivery-offer-icon" aria-hidden="true"></span>
-            <p>Place another order within <strong>30 minutes</strong> and get free delivery. <a href="#">Terms and Conditions apply</a></p>
-          </aside>
-        </section>
-
-        <form class="signup-panel" aria-labelledby="signup-title" novalidate>
-          <h2 id="signup-title">Want to track your orders?</h2>
-          <p>Enter a password to set up an account</p>
-
-          <div class="password-row">
-            <label class="visually-hidden" for="complete-password">Enter a Password</label>
-            <input class="text-input" id="complete-password" name="password" type="password" autocomplete="new-password" placeholder="Enter a Password">
-            <button class="btn btn-secondary" type="button">SHOW</button>
-          </div>
-          <p class="helper-text">Password must be 6-12 characters and include letters and numbers.</p>
-
-          <div class="complete-marketing">
-            <p>Tick the relevant box to opt out of <strong>NEXT</strong> offers, updates and the chance of exclusive Next Sale access.</p>
-            <div class="checkbox-grid">
-              <label><input type="checkbox" name="completeMarketing" value="email"> Email</label>
-              <label><input type="checkbox" name="completeMarketing" value="sms"> SMS</label>
-              <label><input type="checkbox" name="completeMarketing" value="post"> Post</label>
-            </div>
-          </div>
-
-          <p class="complete-terms">By clicking ‘Great, Sign Me Up’ you agree to the Next <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy and Cookie Policy</a>.</p>
-          <button class="btn btn-primary" type="button">GREAT, SIGN ME UP</button>
-        </form>
-
-        <section class="recommendations" aria-labelledby="recommendations-title">
-          <h2 id="recommendations-title">You May Also Like</h2>
-          <div class="recommendation-row">
-            <article class="recommendation-card">
-              <img src="/images/product-striped-top.png" alt="Monochrome striped rib halter neck vest">
-              <strong>£17</strong>
-              <p>Next Monochrome Striped Rib Halter Neck Vest</p>
-            </article>
-            <article class="recommendation-card">
-              <img src="/images/product-striped-top.png" alt="White relaxed boxy elbow length crew neck T-shirt">
-              <strong>£10</strong>
-              <p>Next White Relaxed Boxy Elbow Length Crew Neck T-Shirt</p>
-            </article>
-            <article class="recommendation-card">
-              <img src="/images/product-striped-top.png" alt="Gold tone floral necklace">
-              <strong>£12</strong>
-              <p>Next Gold Tone Floral 3 Row Necklace</p>
-            </article>
-            <article class="recommendation-card">
-              <img src="/images/product-striped-top.png" alt="White ruched tie detail top">
-              <strong>£10</strong>
-              <p>Next White Ruched Tie Detail Cotton Top</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="promo-tile" aria-label="Boys bedroom promotion">
+    <main class="order-complete-main content-container">
+      <section class="order-complete-hero" aria-labelledby="order-complete-title">
+        <div class="complete-row">
+          <span class="complete-tick" aria-hidden="true"></span>
           <div>
-            <h2>BOYS' BEDROOM</h2>
-            <p>Pack it with personality</p>
+            <div class="complete-title-row">
+              <h1 id="order-complete-title">ORDER COMPLETE</h1>
+              <button class="link-button" type="button">Show Details</button>
+            </div>
+            <p>Confirmation sent to <span data-complete-email>alex_smith32@gmail.com</span></p>
           </div>
-          <a class="btn btn-secondary" href="#">SHOP NOW</a>
-        </section>
-      </main>
-
-      <footer class="checkout-footer">
-        <div class="content-container">
-          <p>©2026 Next. All Rights Reserved.</p>
         </div>
-      </footer>
-    </div>
 
-    <script src="/scripts/script.js?v=order-complete-1"></script>
-  </body>
+        <aside class="delivery-offer">
+          <span class="delivery-offer-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="delivery-m-default">
+    <path id="default" d="M22.3 6.45C22.04 5.59 21.19 5 20.24 5h-5.99V2H0v15c0 1.1.9 2 2 2 0 1.66 1.34 3 3 3s3-1.34 3-3h8c0 1.66 1.34 3 3 3s3-1.34 3-3v-.01c1.12-.07 2-.87 2-1.85v-6.38l-1.7-4.3v-.01ZM5 20.75c-.96 0-1.75-.79-1.75-1.75 0-.49.2-.93.53-1.25.32-.31.75-.5 1.22-.5s.91.19 1.22.5c.33.32.53.76.53 1.25 0 .96-.79 1.75-1.75 1.75ZM13 5v12.75H7.72A2.99 2.99 0 0 0 5 16a3 3 0 0 0-2.72 1.75H2c-.41 0-.75-.34-.75-.75V3.25H13V5Zm4.25 1.25h2.99c.41 0 .77.23.87.57v.05l.03.05 1.52 3.84H18c-.41 0-.75-.34-.75-.75V6.25ZM19 20.75c-.96 0-1.75-.79-1.75-1.75 0-.49.2-.93.53-1.25.32-.31.75-.5 1.22-.5s.91.19 1.22.5c.33.32.53.76.53 1.25 0 .96-.79 1.75-1.75 1.75Zm3.75-3.62c0 .29-.37.62-.9.62h-.13A2.99 2.99 0 0 0 19 16a3 3 0 0 0-2.72 1.75h-2.03V6.25H16V10c0 1.1.9 2 2 2h4.75v5.13Z"/>
+  </g>
+</svg>
+</span>
+          <p>Place another order within <strong>30 minutes</strong> and get free delivery. <a href="#">Terms and
+              Conditions apply</a></p>
+        </aside>
+      </section>
+
+      <form class="signup-panel" aria-labelledby="signup-title" novalidate>
+        <h2 id="signup-title">Want to track your orders?</h2>
+        <p>Enter a password to set up an account</p>
+
+        <div class="password-row">
+          <label class="visually-hidden" for="complete-password">Enter a Password</label>
+          <input class="text-input" id="complete-password" name="password" type="password" autocomplete="new-password"
+            placeholder="Enter a Password">
+          <button class="btn btn-secondary" type="button">SHOW</button>
+        </div>
+        <p class="helper-text">Password must be 6-12 characters and include letters and numbers.</p>
+
+        <div class="complete-marketing">
+          <p>Tick the relevant box to opt out of <strong>NEXT</strong> offers, updates and the chance of exclusive Next
+            Sale access.</p>
+          <div class="checkbox-grid">
+            <label><input type="checkbox" name="completeMarketing" value="email"> Email</label>
+            <label><input type="checkbox" name="completeMarketing" value="sms"> SMS</label>
+            <label><input type="checkbox" name="completeMarketing" value="post"> Post</label>
+          </div>
+        </div>
+
+        <p class="complete-terms">By clicking ‘Great, Sign Me Up’ you agree to the Next <a href="#">Terms &amp;
+            Conditions</a> and <a href="#">Privacy and Cookie Policy</a>.</p>
+        <button class="btn btn-primary" type="button">GREAT, SIGN ME UP</button>
+      </form>
+
+      <section class="recommendations" aria-labelledby="recommendations-title">
+        <h2 id="recommendations-title">You May Also Like</h2>
+        <div class="recommendation-row">
+          <article class="recommendation-card">
+            <img src="/images/product-striped-top.png" alt="Monochrome striped rib halter neck vest">
+            <strong>£17</strong>
+            <p>Next Monochrome Striped Rib Halter Neck Vest</p>
+          </article>
+          <article class="recommendation-card">
+            <img src="/images/product-striped-top.png" alt="White relaxed boxy elbow length crew neck T-shirt">
+            <strong>£10</strong>
+            <p>Next White Relaxed Boxy Elbow Length Crew Neck T-Shirt</p>
+          </article>
+          <article class="recommendation-card">
+            <img src="/images/product-striped-top.png" alt="Gold tone floral necklace">
+            <strong>£12</strong>
+            <p>Next Gold Tone Floral 3 Row Necklace</p>
+          </article>
+          <article class="recommendation-card">
+            <img src="/images/product-striped-top.png" alt="White ruched tie detail top">
+            <strong>£10</strong>
+            <p>Next White Ruched Tie Detail Cotton Top</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="promo-tile" aria-label="Boys bedroom promotion">
+        <div>
+          <h2>BOYS' BEDROOM</h2>
+          <p>Pack it with personality</p>
+        </div>
+        <a class="btn btn-secondary" href="#">SHOP NOW</a>
+      </section>
+    </main>
+
+    <footer class="checkout-footer">
+      <div class="content-container">
+        <p>©2026 Next. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/scripts/script.js?v=checkout-2"></script>
+</body>
+
 </html>

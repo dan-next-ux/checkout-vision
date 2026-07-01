@@ -7,7 +7,7 @@
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
-    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/styles.css?v=checkout-2">
   </head>
   <body data-page="payment">
     <div class="app-frame">
@@ -82,7 +82,11 @@
                     <strong>Credit / Debit Card</strong>
                   </span>
                 </span>
-                <span class="card-icon" aria-hidden="true"></span>
+                <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="card-m-default">
+    <path id="default" fill-rule="evenodd" d="M22 3.875H2c-1.1 0-2 .9-2 2v12.25c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V5.875c0-1.1-.9-2-2-2Zm-20.75 2c0-.41.34-.75.75-.75h20c.41 0 .75.34.75.75v.5H1.25v-.5Zm0 1.75h21.5v2.5H1.25v-2.5ZM22 18.875H2c-.41 0-.75-.34-.75-.75v-6.75h21.5v6.75c0 .41-.34.75-.75.75Zm-18.03-2.75h-.35c-.35 0-.62.28-.62.62 0 .34.28.62.62.62h.35c.35 0 .62-.28.62-.62 0-.34-.28-.62-.62-.62Zm2.05 0h.36a.62.62 0 0 1 .62.62v.01a.62.62 0 0 1-.62.62h-.36a.62.62 0 0 1-.62-.62v-.01a.62.62 0 0 1 .62-.62Zm4.36 0H8.43c-.35 0-.62.28-.62.62 0 .34.28.62.62.62h1.95c.35 0 .62-.28.62-.62 0-.34-.28-.62-.62-.62Zm5.01-2.75H19c1.1 0 2 .9 2 2s-.9 2-2 2h-3.61c-1.1 0-2-.9-2-2s.9-2 2-2Zm0 2.75H19c.41 0 .75-.34.75-.75s-.34-.75-.75-.75h-3.61c-.41 0-.75.34-.75.75s.34.75.75.75Z" clip-rule="evenodd"/>
+  </g>
+</svg></span>
               </button>
 
               <section class="card-panel" aria-label="Credit / Debit Card details" hidden>
@@ -91,18 +95,51 @@
                     <span class="radio-dot" aria-hidden="true"></span>
                     <span class="payment-copy inline-copy">
                       <strong>Credit / Debit Card</strong>
-                      <small>(2 Saved Cards)</small>
                     </span>
                   </span>
-                  <span class="card-icon" aria-hidden="true"></span>
+                  <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="card-m-default">
+    <path id="default" fill-rule="evenodd" d="M22 3.875H2c-1.1 0-2 .9-2 2v12.25c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V5.875c0-1.1-.9-2-2-2Zm-20.75 2c0-.41.34-.75.75-.75h20c.41 0 .75.34.75.75v.5H1.25v-.5Zm0 1.75h21.5v2.5H1.25v-2.5ZM22 18.875H2c-.41 0-.75-.34-.75-.75v-6.75h21.5v6.75c0 .41-.34.75-.75.75Zm-18.03-2.75h-.35c-.35 0-.62.28-.62.62 0 .34.28.62.62.62h.35c.35 0 .62-.28.62-.62 0-.34-.28-.62-.62-.62Zm2.05 0h.36a.62.62 0 0 1 .62.62v.01a.62.62 0 0 1-.62.62h-.36a.62.62 0 0 1-.62-.62v-.01a.62.62 0 0 1 .62-.62Zm4.36 0H8.43c-.35 0-.62.28-.62.62 0 .34.28.62.62.62h1.95c.35 0 .62-.28.62-.62 0-.34-.28-.62-.62-.62Zm5.01-2.75H19c1.1 0 2 .9 2 2s-.9 2-2 2h-3.61c-1.1 0-2-.9-2-2s.9-2 2-2Zm0 2.75H19c.41 0 .75-.34.75-.75s-.34-.75-.75-.75h-3.61c-.41 0-.75.34-.75.75s.34.75.75.75Z" clip-rule="evenodd"/>
+  </g>
+</svg></span>
                 </div>
 
                 <div class="card-frame">
-                  <label class="card-checkbox is-checked">
-                    <input type="checkbox" checked>
+                  <label class="card-checkbox">
+                    <input id="use-delivery-address" name="useDeliveryAddress" type="checkbox" checked>
                     <span aria-hidden="true"></span>
-                    Use delivery address as billing address
+                    Use same billing address as delivery address
                   </label>
+
+                  <div class="billing-address-fields" data-billing-address-fields hidden>
+                    <div class="field-row">
+                      <label for="billing-address-line-1">Address Line 1 <span class="required">*</span></label>
+                      <div class="field-with-icon address-lookup" data-address-lookup>
+                        <input class="text-input card-input" id="billing-address-line-1" name="billingAddressLine1" type="text" autocomplete="off" placeholder="Start typing your address and pick from the list" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="billing-address-suggestions">
+                        <button class="field-icon-button" type="button" aria-label="Search billing address">
+                          <img src="/images/search.svg" alt="">
+                        </button>
+                        <div class="address-suggestions" id="billing-address-suggestions" role="listbox" aria-label="Billing address matches"></div>
+                      </div>
+                    </div>
+
+                    <div class="field-row">
+                      <label for="billing-address-line-2">Address Line 2 <span class="required">*</span></label>
+                      <input class="text-input card-input" id="billing-address-line-2" name="billingAddressLine2" type="text" autocomplete="address-line2">
+                    </div>
+
+                    <div class="field-grid">
+                      <div class="field-row">
+                        <label for="billing-town-city">Town/City <span class="required">*</span></label>
+                        <input class="text-input card-input" id="billing-town-city" name="billingTownCity" type="text" autocomplete="address-level2">
+                      </div>
+
+                      <div class="field-row">
+                        <label for="billing-postcode">Postcode <span class="required">*</span></label>
+                        <input class="text-input card-input" id="billing-postcode" name="billingPostcode" type="text" autocomplete="postal-code">
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="card-logos" aria-label="Accepted cards">
                     <span class="card-logo visa">VISA</span>
@@ -135,7 +172,7 @@
                   </div>
 
                   <label class="card-checkbox">
-                    <input type="checkbox">
+                    <input id="save-card" name="saveCard" type="checkbox">
                     <span aria-hidden="true"></span>
                     Save this card for faster payment
                   </label>
@@ -175,15 +212,36 @@
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span class="payment-copy"><strong>Paypal*</strong></span>
                 </span>
-                <span class="paypal-mark">P</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" fill="none" viewBox="0 0 25 24">
+  <g id="payment-paypal-m-ident">
+    <g id="default">
+      <path fill="#27346A" fill-rule="evenodd" d="m12.776 21.193.609-3.865.04-.215a.807.807 0 0 1 .27-.481.787.787 0 0 1 .514-.192h.485c.807 0 1.547-.088 2.203-.256a5.64 5.64 0 0 0 1.85-.837 4.989 4.989 0 0 0 1.395-1.527c.387-.65.673-1.433.845-2.325.155-.787.181-1.493.087-2.098-.1-.64-.346-1.181-.73-1.618a3.136 3.136 0 0 0-.88-.68h-.008v-.013c.125-.787.118-1.443-.013-2.008a3.569 3.569 0 0 0-.828-1.558c-.877-.995-2.472-1.5-4.735-1.5H7.657a.877.877 0 0 0-.865.737L4.206 19.18a.518.518 0 0 0 .511.599h3.858v.017l-.269 1.682a.453.453 0 0 0 .447.521h3.236a.76.76 0 0 0 .754-.642l.03-.165" clip-rule="evenodd"/>
+      <path fill="#2790C3" fill-rule="evenodd" d="M19.435 7.069c-.02.118-.04.239-.064.363-.82 4.211-3.625 5.668-7.211 5.668h-1.826a.886.886 0 0 0-.875.75l-1.2 7.605a.467.467 0 0 0 .46.538h3.236a.78.78 0 0 0 .77-.656l.03-.165.61-3.868.04-.215a.778.778 0 0 1 .77-.656h.484c3.135 0 5.59-1.275 6.31-4.958.3-1.54.145-2.825-.649-3.727a3.107 3.107 0 0 0-.885-.682" clip-rule="evenodd"/>
+      <path fill="#1F264F" fill-rule="evenodd" d="M18.255 8.58a4.656 4.656 0 0 0-.387-.097 5.213 5.213 0 0 0-.41-.077 10 10 0 0 0-1.608-.118h-4.878a.782.782 0 0 0-.77.66l-1.066 6.764a.883.883 0 0 1 .874-.75h1.827c3.585 0 6.39-1.457 7.211-5.668.024-.125.044-.246.064-.363a4.353 4.353 0 0 0-.672-.286 3.367 3.367 0 0 0-.186-.057" clip-rule="evenodd"/>
+      <path fill="#27346A" fill-rule="evenodd" d="M10.556 7.11a.78.78 0 0 1 .77-.66h4.878a9.97 9.97 0 0 1 1.607.118 7.394 7.394 0 0 1 .798.175c.063.016.124.037.185.057.242.08.467.175.672.286.246-1.558 0-2.617-.844-3.576C17.694 2.454 16.02 2 13.876 2h-6.22a.89.89 0 0 0-.877.75l-2.59 16.431a.533.533 0 0 0 .528.616h3.838l2.001-12.688Z" clip-rule="evenodd"/>
+    </g>
+  </g>
+</svg>
+</span>
               </button>
 
               <button class="payment-method" type="button" role="radio" aria-checked="false">
                 <span class="payment-method-main">
                   <span class="radio-dot" aria-hidden="true"></span>
-                  <span class="payment-copy"><strong>Google Pay</strong></span>
+                  <span class="payment-copy"><strong>Apple Pay</strong></span>
                 </span>
-                <span class="gpay-mark">G Pay</span>
+                <span class="gpay-mark"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="16" fill="none" viewBox="0 0 26 16">
+  <g clip-path="url(#a)">
+    <path fill="#000" d="M23.651 0H2.88c-.073 0-.144 0-.216.003a3.249 3.249 0 0 0-.47.04 1.572 1.572 0 0 0-.447.149 1.488 1.488 0 0 0-.657.657c-.072.143-.119.29-.146.446a3.086 3.086 0 0 0-.042.472 7.707 7.707 0 0 0-.003.215v12.036c0 .072 0 .143.003.215.004.157.013.314.042.47.029.157.074.304.146.447a1.486 1.486 0 0 0 .657.657c.144.072.29.119.447.148.156.027.313.037.47.04.072.002.143.004.216.004h21.029c.072 0 .143 0 .216-.004.157-.004.314-.013.47-.04.156-.029.303-.074.446-.148a1.486 1.486 0 0 0 .657-.657c.073-.143.12-.29.147-.447.028-.155.037-.313.04-.47.002-.072.003-.143.003-.215V1.98c0-.073 0-.144-.003-.216a3.241 3.241 0 0 0-.04-.47 1.616 1.616 0 0 0-.147-.446 1.49 1.49 0 0 0-.657-.657 1.62 1.62 0 0 0-.447-.148 3.082 3.082 0 0 0-.47-.041L23.909 0h-.257Z"/>
+    <path fill="#fff" d="M23.651.533h.253c.067 0 .137.001.205.003.12.003.26.01.39.033a.97.97 0 0 1 .543.277 1.007 1.007 0 0 1 .275.545c.022.128.03.268.033.39.001.067.003.135.003.204v12.03c0 .067 0 .135-.003.203a2.54 2.54 0 0 1-.033.391.987.987 0 0 1-.275.544.926.926 0 0 1-.246.178c-.09.047-.186.077-.298.098-.133.024-.279.03-.388.034-.07.001-.137.003-.208.003H2.882c-.07 0-.138 0-.204-.003a2.631 2.631 0 0 1-.39-.034 1.036 1.036 0 0 1-.3-.098.978.978 0 0 1-.52-.723 2.43 2.43 0 0 1-.034-.39l-.003-.204V1.984c0-.068 0-.136.003-.205.003-.12.009-.26.033-.391a1.009 1.009 0 0 1 .276-.544.977.977 0 0 1 .544-.276c.13-.024.27-.03.39-.034L2.88.531h20.768"/>
+    <path fill="#000" d="M7.72 5.381c.215-.267.36-.626.322-.995-.312.015-.696.207-.916.474-.2.23-.375.604-.33.956.353.03.704-.175.925-.436m.317.505c-.51-.03-.945.29-1.188.29-.244 0-.618-.274-1.021-.267a1.507 1.507 0 0 0-1.28.778c-.549.945-.145 2.348.388 3.119.26.38.57.8.982.785.389-.015.541-.252 1.014-.252.472 0 .61.252 1.02.245.428-.008.693-.382.953-.763.297-.435.418-.853.427-.877-.007-.008-.823-.32-.83-1.258-.008-.785.64-1.158.67-1.182-.365-.54-.937-.602-1.135-.618Zm4.445-1.062c1.11 0 1.883.765 1.883 1.878s-.788 1.887-1.91 1.887h-1.23v1.954h-.887v-5.72h2.144Zm-1.256 3.02h1.019c.773 0 1.212-.416 1.212-1.136s-.44-1.134-1.21-1.134h-1.021v2.27Zm3.371 1.515c0-.73.559-1.178 1.55-1.233l1.142-.068v-.322c0-.464-.312-.741-.836-.741-.495 0-.805.237-.88.61h-.81c.047-.754.69-1.308 1.72-1.308s1.656.535 1.656 1.371v2.873h-.82v-.685h-.02c-.24.463-.768.756-1.316.756-.817 0-1.387-.507-1.387-1.256l.001.003Zm2.692-.376v-.329l-1.026.063c-.512.037-.8.262-.8.62 0 .357.301.602.76.602.598 0 1.066-.412 1.066-.956Zm1.626 3.095v-.693c.064.015.206.015.278.015.397 0 .61-.166.742-.594 0-.008.075-.254.075-.259l-1.507-4.174h.927l1.054 3.392h.015l1.054-3.392h.905l-1.562 4.387c-.356 1.012-.768 1.336-1.633 1.336-.071 0-.286-.007-.35-.02l.002.002Z"/>
+  </g>
+  <defs>
+    <clipPath id="a">
+      <path fill="#fff" d="M0 0h24.991v16H0z" transform="translate(.898)"/>
+    </clipPath>
+  </defs>
+</svg></span>
               </button>
 
               <button class="payment-method" type="button" role="radio" aria-checked="false">
@@ -191,7 +249,11 @@
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span class="payment-copy"><strong>Giftcard / eVoucher</strong></span>
                 </span>
-                <span class="gift-icon" aria-hidden="true"></span>
+                <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="giftcard-m-default">
+    <path id="default" fill-rule="evenodd" d="M21.65 5.75H22c1.1 0 2 .9 2 2V20c0 1.1-.9 2-2 2H2c-1.1 0-2-.9-2-2V7.75c0-1.1.9-2 2-2h11.59c-.22-.37-.35-.79-.35-1.25a2.495 2.495 0 0 1 4.38-1.64c.46-.52 1.13-.86 1.88-.86A2.5 2.5 0 0 1 22 4.5c0 .46-.13.88-.35 1.25Zm-2.15-2.5c-.69 0-1.25.56-1.25 1.25v1.25h1.25a1.25 1.25 0 0 0 0-2.5Zm-.13 11.16V7h-3.5v7.41l1.06-.7.69-.46.69.46 1.06.7ZM15.74 3.25a1.25 1.25 0 0 0 0 2.5h1.25V4.5c0-.69-.56-1.25-1.25-1.25Zm6.25 17.5c.41 0 .75-.34.75-.75h.01V7.75c0-.41-.34-.75-.75-.75h-1.38v9.74l-3-2-3 2v-5.5H3.6c-.33 0-.6-.28-.6-.62 0-.34.27-.62.6-.62h11.02V7H2c-.41 0-.75.34-.75.75V20c0 .41.34.75.75.75h19.99ZM3.63 18h.75c.34 0 .62.28.62.62 0 .34-.27.62-.62.62h-.75c-.34 0-.62-.28-.62-.62 0-.34.27-.62.62-.62Zm3.75 0h-.75c-.35 0-.62.28-.62.62 0 .34.28.62.62.62h.75c.35 0 .62-.28.62-.62 0-.34-.28-.62-.62-.62Zm2.25 0h2.75c.34 0 .62.28.62.62 0 .34-.27.62-.62.62H9.63c-.34 0-.62-.28-.62-.62 0-.34.27-.62.62-.62Z" clip-rule="evenodd"/>
+  </g>
+</svg></span>
               </button>
             </div>
 
@@ -247,6 +309,6 @@
       </footer>
     </div>
 
-    <script src="/scripts/script.js?v=order-complete-1"></script>
+    <script src="/scripts/script.js?v=checkout-2"></script>
   </body>
 </html>

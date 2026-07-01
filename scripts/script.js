@@ -399,6 +399,51 @@
     const payNowButton = document.querySelector("[data-pay-now]");
     const deliverySummary = document.querySelector("[data-summary-delivery-address]");
     const deliveryDateSummary = document.querySelector("[data-summary-delivery-date]");
+    const useDeliveryAddressInput = document.querySelector("#use-delivery-address");
+    const billingAddressFields = document.querySelector("[data-billing-address-fields]");
+    const billingAddressLookup = document.querySelector("#billing-address-line-1")?.closest("[data-address-lookup]");
+    const billingAddressInput = document.querySelector("#billing-address-line-1");
+    const billingSuggestions = document.querySelector("#billing-address-suggestions");
+    const billingAddressLine2 = document.querySelector("#billing-address-line-2");
+    const billingTownCity = document.querySelector("#billing-town-city");
+    const billingPostcode = document.querySelector("#billing-postcode");
+    const billingAddresses = [
+      {
+        line1: "12 Mill Hill",
+        line2: "Enderby",
+        town: "Leicester",
+        postcode: "LE19 4AD",
+        label: "12 Mill Hill, Enderby, Leicester, LE19 4AD"
+      },
+      {
+        line1: "14 Mill Hill",
+        line2: "Enderby",
+        town: "Leicester",
+        postcode: "LE19 4AF",
+        label: "14 Mill Hill, Enderby, Leicester, LE19 4AF"
+      },
+      {
+        line1: "18 Mill Hill Lane",
+        line2: "Enderby",
+        town: "Leicester",
+        postcode: "LE19 4AQ",
+        label: "18 Mill Hill Lane, Enderby, Leicester, LE19 4AQ"
+      },
+      {
+        line1: "22 Mill Hill Road",
+        line2: "Narborough",
+        town: "Leicester",
+        postcode: "LE19 2AA",
+        label: "22 Mill Hill Road, Narborough, Leicester, LE19 2AA"
+      },
+      {
+        line1: "4 Mill Hill Close",
+        line2: "Whetstone",
+        town: "Leicester",
+        postcode: "LE8 6ZD",
+        label: "4 Mill Hill Close, Whetstone, Leicester, LE8 6ZD"
+      }
+    ];
 
     if (email && emailTarget) {
       emailTarget.textContent = email;
@@ -420,11 +465,141 @@
     setInputValue("#cardholder-name", storedValue("paymentCardholderName"));
     setInputValue("#expiry-date", storedValue("paymentExpiryDate"));
     setInputValue("#security-code", storedValue("paymentSecurityCode"));
+    setInputValue("#billing-address-line-1", storedValue("paymentBillingAddressLine1", storedValue("deliveryAddressLine1")));
+    setInputValue("#billing-address-line-2", storedValue("paymentBillingAddressLine2", storedValue("deliveryAddressLine2")));
+    setInputValue("#billing-town-city", storedValue("paymentBillingTownCity", storedValue("deliveryTownCity")));
+    setInputValue("#billing-postcode", storedValue("paymentBillingPostcode", storedValue("deliveryPostcode")));
+
+    function persistBillingAddress() {
+      sessionStorage.setItem("paymentBillingAddressLine1", billingAddressInput?.value.trim() || "");
+      sessionStorage.setItem("paymentBillingAddressLine2", billingAddressLine2?.value.trim() || "");
+      sessionStorage.setItem("paymentBillingTownCity", billingTownCity?.value.trim() || "");
+      sessionStorage.setItem("paymentBillingPostcode", billingPostcode?.value.trim() || "");
+    }
+
+    function normaliseBillingAddress(value) {
+      return value.trim().toLowerCase();
+    }
+
+    function closeBillingSuggestions() {
+      if (!billingAddressLookup || !billingAddressInput) {
+        return;
+      }
+
+      billingSuggestions.innerHTML = "";
+      billingAddressLookup.classList.remove("is-open");
+      billingAddressInput.setAttribute("aria-expanded", "false");
+    }
+
+    function selectBillingAddress(address) {
+      if (!billingAddressInput || !billingAddressLine2 || !billingTownCity || !billingPostcode) {
+        return;
+      }
+
+      billingAddressInput.value = address.line1;
+      billingAddressLine2.value = address.line2;
+      billingTownCity.value = address.town;
+      billingPostcode.value = address.postcode;
+      persistBillingAddress();
+      closeBillingSuggestions();
+      billingAddressInput.focus();
+    }
+
+    function renderBillingSuggestions() {
+      if (!billingAddressLookup || !billingAddressInput || !billingSuggestions) {
+        return;
+      }
+
+      const query = normaliseBillingAddress(billingAddressInput.value);
+      const matches = query.length >= 2 ? billingAddresses.filter((address) => normaliseBillingAddress(address.label).startsWith(query)) : [];
+      billingSuggestions.innerHTML = "";
+
+      matches.forEach((address, index) => {
+        const option = document.createElement("button");
+        option.className = "address-suggestion";
+        option.type = "button";
+        option.role = "option";
+        option.id = `billing-address-option-${index}`;
+        option.textContent = address.label;
+        option.addEventListener("click", () => selectBillingAddress(address));
+        billingSuggestions.append(option);
+      });
+
+      billingAddressLookup.classList.toggle("is-open", matches.length > 0);
+      billingAddressInput.setAttribute("aria-expanded", matches.length > 0 ? "true" : "false");
+    }
+
+    function syncBillingAddressVisibility() {
+      if (!billingAddressFields || !useDeliveryAddressInput) {
+        return;
+      }
+
+      const useDeliveryAddress = useDeliveryAddressInput.checked;
+      billingAddressFields.hidden = useDeliveryAddress;
+      if (useDeliveryAddress) {
+        closeBillingSuggestions();
+        return;
+      }
+
+      if (!(billingAddressInput?.value || billingAddressLine2?.value || billingTownCity?.value || billingPostcode?.value)) {
+        billingAddressInput.value = storedValue("deliveryAddressLine1");
+        billingAddressLine2.value = storedValue("deliveryAddressLine2");
+        billingTownCity.value = storedValue("deliveryTownCity");
+        billingPostcode.value = storedValue("deliveryPostcode");
+        persistBillingAddress();
+      }
+    }
+
+    document.querySelectorAll(".card-checkbox input").forEach((input) => {
+      const checkboxLabel = input.closest(".card-checkbox");
+      function syncCheckboxState() {
+        checkboxLabel?.classList.toggle("is-checked", input.checked);
+      }
+
+      const storedChecked = sessionStorage.getItem(`payment${input.name.charAt(0).toUpperCase()}${input.name.slice(1)}`);
+      if (storedChecked !== null) {
+        input.checked = storedChecked === "true";
+      }
+      syncCheckboxState();
+      input.addEventListener("change", () => {
+        sessionStorage.setItem(`payment${input.name.charAt(0).toUpperCase()}${input.name.slice(1)}`, input.checked ? "true" : "false");
+        syncCheckboxState();
+        if (input === useDeliveryAddressInput) {
+          syncBillingAddressVisibility();
+          if (!input.checked) {
+            billingAddressInput?.focus();
+          }
+        }
+      });
+      input.addEventListener("focus", () => checkboxLabel?.classList.add("is-focused"));
+      input.addEventListener("blur", () => checkboxLabel?.classList.remove("is-focused"));
+    });
+    syncBillingAddressVisibility();
     document.querySelectorAll(".card-input").forEach((input) => {
       input.addEventListener("input", () => {
         sessionStorage.setItem(`payment${input.name.charAt(0).toUpperCase()}${input.name.slice(1)}`, input.value);
       });
     });
+
+    if (billingAddressLookup && billingAddressInput && billingSuggestions) {
+      billingAddressInput.addEventListener("focus", renderBillingSuggestions);
+      billingAddressInput.addEventListener("input", () => {
+        persistBillingAddress();
+        renderBillingSuggestions();
+      });
+      billingAddressLookup.querySelector(".field-icon-button")?.addEventListener("click", () => {
+        billingAddressInput.focus();
+        renderBillingSuggestions();
+      });
+      [billingAddressLine2, billingTownCity, billingPostcode].forEach((input) => {
+        input?.addEventListener("input", persistBillingAddress);
+      });
+      document.addEventListener("click", (event) => {
+        if (!billingAddressLookup.contains(event.target)) {
+          closeBillingSuggestions();
+        }
+      });
+    }
 
     function collapseCard() {
       if (!cardButton || !cardPanel) {
