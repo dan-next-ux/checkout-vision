@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sign In / Register | Checkout Vision</title>
+    <title>Enter One Time Passcode | Checkout Vision</title>
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
     <link rel="stylesheet" href="/styles/styles.css?v=checkout-9">
   </head>
-  <body data-page="signin-register">
+  <body data-page="enter-otp">
     <div class="app-frame">
       <header class="brand-bar" aria-label="Checkout header">
         <div class="brand-side">
@@ -31,36 +31,45 @@
       </header>
 
       <nav class="page-nav" aria-label="Page">
-        <button class="icon-button nav-back" type="button" aria-label="Back">
+        <a class="icon-button nav-back" href="/your-details/" aria-label="Back">
           <img src="/images/chevron-left-m-default.svg" alt="">
-        </button>
-        <h1>Sign In / Register</h1>
+        </a>
+        <h1>Sign In With One Time Passcode</h1>
       </nav>
 
       <main class="content-area">
-        <div class="content-container signin-main">
-          <form class="signin-card" novalidate>
-            <section class="intro-copy" aria-labelledby="signin-heading">
-              <h2 id="signin-heading">Enter your email address or customer number to continue</h2>
-              <p>We'll check if you already have an account</p>
-            </section>
-
-            <div class="field-row">
-              <label class="visually-hidden" for="signin-identifier">Email address or customer number</label>
-              <input class="text-input" id="signin-identifier" name="identifier" type="text" autocomplete="email" aria-describedby="signin-error">
-              <p class="field-error" id="signin-error">Enter your email address or customer number to continue.</p>
+        <div class="content-container otp-main">
+          <section class="otp-panel" aria-labelledby="otp-title">
+            <div class="otp-heading">
+              <img src="/images/secure-m-default.svg" alt="">
+              <h2 id="otp-title">Secure Sign In</h2>
             </div>
+            <p class="otp-intro">We sent a 6-digit code to your email and SMS.</p>
+            <p class="otp-expiry">Enter the code within 1 hour to sign in.</p>
 
-            <button class="btn btn-primary" type="submit">CONTINUE</button>
-          </form>
+            <form class="otp-form" novalidate>
+              <fieldset class="otp-code" aria-label="One time passcode">
+                <input class="otp-input" inputmode="numeric" maxlength="1" pattern="[0-9]*" value="1" aria-label="Digit 1">
+                <input class="otp-input" inputmode="numeric" maxlength="1" pattern="[0-9]*" value="2" aria-label="Digit 2">
+                <input class="otp-input" inputmode="numeric" maxlength="1" pattern="[0-9]*" value="3" aria-label="Digit 3">
+                <input class="otp-input" inputmode="numeric" maxlength="1" pattern="[0-9]*" value="4" aria-label="Digit 4">
+                <input class="otp-input" inputmode="numeric" maxlength="1" pattern="[0-9]*" value="5" aria-label="Digit 5">
+                <input class="otp-input" inputmode="numeric" maxlength="1" pattern="[0-9]*" value="6" aria-label="Digit 6">
+              </fieldset>
 
-          <div class="or-divider" aria-hidden="true">
+              <button class="btn btn-primary" type="submit" data-otp-continue>CONTINUE</button>
+            </form>
+
+            <p class="otp-fallback">Didn’t receive anything? <a href="/your-details/">Enter Password</a> or <a href="/your-details/">Go Back</a> and try again.</p>
+          </section>
+
+          <div class="or-divider otp-divider" aria-hidden="true">
             <span></span>
             <strong>OR</strong>
             <span></span>
           </div>
 
-          <section class="guest-panel" aria-label="Guest checkout options">
+          <section class="guest-panel otp-guest-panel" aria-label="Guest checkout options">
             <a class="btn btn-secondary" href="/your-details/">CHECKOUT AS GUEST</a>
 
             <div class="express-block">

@@ -126,6 +126,7 @@
     const form = document.querySelector(".signin-card");
     const input = document.querySelector("#signin-identifier");
     const row = input.closest(".field-row");
+    const recognisedEmail = "recognised@email.com";
 
     input.value = sessionStorage.getItem("checkoutIdentifier") || "";
 
@@ -138,7 +139,9 @@
         return;
       }
 
-      sessionStorage.setItem("checkoutIdentifier", input.value.trim());
+      const identifier = input.value.trim();
+      sessionStorage.setItem("checkoutIdentifier", identifier);
+      sessionStorage.setItem("accountMatchVisible", identifier.toLowerCase() === recognisedEmail ? "true" : "false");
       window.location.href = "/your-details/";
     });
   }
@@ -146,9 +149,15 @@
   function initDetails() {
     const form = document.querySelector(".details-form");
     const email = document.querySelector("#email");
+    const emailRow = email?.closest(".field-row");
+    const accountMatch = document.querySelector("[data-account-match]");
+    const accountPassword = document.querySelector("#account-password");
+    const accountPasswordToggle = document.querySelector("[data-account-password-toggle]");
     const storedIdentifier = sessionStorage.getItem("checkoutIdentifier");
+    const recognisedEmail = "recognised@email.com";
 
     email.value = storedValue("checkoutEmail", storedIdentifier && storedIdentifier.includes("@") ? storedIdentifier : "");
+    setInputValue("#account-password", storedValue("accountMatchPassword"));
     setInputValue("#first-name", storedValue("checkoutFirstName"));
     setInputValue("#last-name", storedValue("checkoutLastName"));
     setInputValue("#password", storedValue("checkoutPassword"));
@@ -162,8 +171,44 @@
         if (row) {
           setInvalid(row, false);
         }
+        if (input === email && input.value.trim().toLowerCase() !== recognisedEmail) {
+          setAccountMatch(false);
+        }
       });
     });
+
+    function setAccountMatch(isMatched) {
+      if (!accountMatch) {
+        return;
+      }
+      accountMatch.hidden = !isMatched;
+      emailRow?.classList.toggle("is-account-match", isMatched);
+      email.setAttribute("aria-expanded", isMatched ? "true" : "false");
+      sessionStorage.setItem("accountMatchVisible", isMatched ? "true" : "false");
+      if (!isMatched && accountPassword && accountPasswordToggle) {
+        accountPassword.type = "password";
+        accountPasswordToggle.textContent = "SHOW";
+        accountPasswordToggle.setAttribute("aria-pressed", "false");
+      }
+    }
+
+    email.addEventListener("blur", () => {
+      setAccountMatch(email.value.trim().toLowerCase() === recognisedEmail);
+    });
+
+    if (accountPasswordToggle && accountPassword) {
+      accountPasswordToggle.addEventListener("click", () => {
+        const isPasswordVisible = accountPassword.type === "text";
+        accountPassword.type = isPasswordVisible ? "password" : "text";
+        accountPasswordToggle.textContent = isPasswordVisible ? "SHOW" : "HIDE";
+        accountPasswordToggle.setAttribute("aria-pressed", isPasswordVisible ? "false" : "true");
+      });
+      accountPassword.addEventListener("input", () => {
+        sessionStorage.setItem("accountMatchPassword", accountPassword.value);
+      });
+    }
+
+    setAccountMatch(email.value.trim().toLowerCase() === recognisedEmail && (storedValue("accountMatchVisible") === "true" || storedIdentifier?.trim().toLowerCase() === recognisedEmail));
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -180,6 +225,51 @@
       });
       setStepScrollTarget("delivery");
       window.location.href = "/delivery/";
+    });
+  }
+
+  function seedOtpCheckoutDetails() {
+    sessionStorage.setItem("checkoutIdentifier", "alex_smith@gmail.com");
+    sessionStorage.setItem("checkoutEmail", "alex_smith@gmail.com");
+    sessionStorage.setItem("checkoutFirstName", "Alex");
+    sessionStorage.setItem("checkoutLastName", "Smith");
+    sessionStorage.setItem("checkoutName", "Alex Smith");
+    sessionStorage.setItem("deliveryType", "home");
+    sessionStorage.setItem("deliveryAddressLine1", "12 Mill Hill");
+    sessionStorage.setItem("deliveryAddressLine2", "Enderby");
+    sessionStorage.setItem("deliveryTownCity", "Leicester");
+    sessionStorage.setItem("deliveryPostcode", "LE19 4AD");
+    sessionStorage.setItem("deliveryAddressLabel", "12 Mill Hill, Enderby, Leicester, LE19 4AD");
+    sessionStorage.setItem("deliveryDate", "wed-12");
+    sessionStorage.setItem("deliveryDateLabel", "Wednesday 12th July");
+    updateOrderLedger("home");
+  }
+
+  function initEnterOtp() {
+    const form = document.querySelector(".otp-form");
+    const inputs = Array.from(document.querySelectorAll(".otp-input"));
+
+    inputs.forEach((input, index) => {
+      input.addEventListener("input", () => {
+        input.value = input.value.replace(/\D/g, "").slice(0, 1);
+        if (input.value && inputs[index + 1]) {
+          inputs[index + 1].focus();
+          inputs[index + 1].select();
+        }
+      });
+
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Backspace" && !input.value && inputs[index - 1]) {
+          inputs[index - 1].focus();
+          inputs[index - 1].select();
+        }
+      });
+    });
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      seedOtpCheckoutDetails();
+      window.location.href = "/payment/";
     });
   }
 
@@ -842,6 +932,10 @@
 
   if (page === "your-details") {
     initDetails();
+  }
+
+  if (page === "enter-otp") {
+    initEnterOtp();
   }
 
   if (page === "delivery") {
