@@ -42,6 +42,29 @@
     return sessionStorage.getItem(key) || fallback;
   }
 
+  function routePath(path) {
+    const githubPagesBase = "/checkout-vision";
+    const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+    const isGithubPages = window.location.pathname === githubPagesBase || window.location.pathname.startsWith(`${githubPagesBase}/`);
+    if (!isGithubPages || normalizedPath.startsWith(`${githubPagesBase}/`)) {
+      return normalizedPath;
+    }
+    return `${githubPagesBase}${normalizedPath}`;
+  }
+
+  function navigateTo(path) {
+    window.location.href = routePath(path);
+  }
+
+  function normaliseInternalPageLinks() {
+    document.querySelectorAll("a[href^='/']").forEach((link) => {
+      const href = link.getAttribute("href");
+      if (href) {
+        link.setAttribute("href", routePath(href));
+      }
+    });
+  }
+
   function setInputValue(selector, value) {
     const input = document.querySelector(selector);
     if (input && value) {
@@ -142,7 +165,7 @@
       const identifier = input.value.trim();
       sessionStorage.setItem("checkoutIdentifier", identifier);
       sessionStorage.setItem("accountMatchVisible", identifier.toLowerCase() === recognisedEmail ? "true" : "false");
-      window.location.href = "/your-details/";
+      navigateTo("/your-details/");
     });
   }
 
@@ -171,8 +194,8 @@
         if (row) {
           setInvalid(row, false);
         }
-        if (input === email && input.value.trim().toLowerCase() !== recognisedEmail) {
-          setAccountMatch(false);
+        if (input === email) {
+          setAccountMatch(email.value.trim().toLowerCase() === recognisedEmail);
         }
       });
     });
@@ -191,10 +214,6 @@
         accountPasswordToggle.setAttribute("aria-pressed", "false");
       }
     }
-
-    email.addEventListener("blur", () => {
-      setAccountMatch(email.value.trim().toLowerCase() === recognisedEmail);
-    });
 
     if (accountPasswordToggle && accountPassword) {
       accountPasswordToggle.addEventListener("click", () => {
@@ -224,7 +243,7 @@
         sessionStorage.setItem(`checkoutMarketing${input.value}`, input.checked ? "true" : "false");
       });
       setStepScrollTarget("delivery");
-      window.location.href = "/delivery/";
+      navigateTo("/delivery/");
     });
   }
 
@@ -269,7 +288,7 @@
     form?.addEventListener("submit", (event) => {
       event.preventDefault();
       seedOtpCheckoutDetails();
-      window.location.href = "/payment/";
+      navigateTo("/payment/");
     });
   }
 
@@ -649,7 +668,7 @@
           sessionStorage.setItem("deliveryDateLabel", selectedDeliveryDateLabel());
         }
         setStepScrollTarget("payment");
-        window.location.href = "/payment/";
+        navigateTo("/payment/");
       });
     });
   }
@@ -910,7 +929,7 @@
 
     if (payNowButton) {
       payNowButton.addEventListener("click", () => {
-        window.location.href = "/order-complete/";
+        navigateTo("/order-complete/");
       });
     }
 
@@ -925,6 +944,8 @@
       emailTarget.textContent = email;
     }
   }
+
+  normaliseInternalPageLinks();
 
   if (page === "signin-register") {
     initSignin();
