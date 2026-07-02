@@ -391,9 +391,13 @@
       option.classList.toggle("is-selected", input.checked);
       input.addEventListener("change", () => {
         deliveryOptions.forEach((item) => item.classList.toggle("is-selected", item === option));
+        clearTimeout(deliveryTimer);
         sessionStorage.setItem("deliveryType", input.value);
+        sessionStorage.removeItem("deliveryStage");
         syncDeliveryTypeLayout();
+        showDeliveryState("address");
         updateOrderLedger(input.value);
+        scrollToStep(".delivery-step");
       });
     });
 
@@ -841,15 +845,36 @@
       }
     }
 
+    function syncCollectionBillingAddressOption() {
+      if (!useDeliveryAddressInput) {
+        return;
+      }
+
+      const checkboxLabel = useDeliveryAddressInput.closest(".card-checkbox");
+      const isCollectionDelivery = deliveryTypeFromState() === "collection";
+      useDeliveryAddressInput.disabled = isCollectionDelivery;
+      checkboxLabel?.classList.toggle("is-disabled", isCollectionDelivery);
+      useDeliveryAddressInput.setAttribute("aria-disabled", isCollectionDelivery ? "true" : "false");
+
+      if (isCollectionDelivery) {
+        useDeliveryAddressInput.checked = false;
+        sessionStorage.setItem("paymentUseDeliveryAddress", "false");
+      }
+    }
+
     document.querySelectorAll(".card-checkbox input").forEach((input) => {
       const checkboxLabel = input.closest(".card-checkbox");
       function syncCheckboxState() {
         checkboxLabel?.classList.toggle("is-checked", input.checked);
+        checkboxLabel?.classList.toggle("is-disabled", input.disabled);
       }
 
       const storedChecked = sessionStorage.getItem(`payment${input.name.charAt(0).toUpperCase()}${input.name.slice(1)}`);
       if (storedChecked !== null) {
         input.checked = storedChecked === "true";
+      }
+      if (input === useDeliveryAddressInput) {
+        syncCollectionBillingAddressOption();
       }
       syncCheckboxState();
       input.addEventListener("change", () => {
