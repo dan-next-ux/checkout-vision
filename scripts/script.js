@@ -176,6 +176,7 @@
     const accountMatch = document.querySelector("[data-account-match]");
     const accountPassword = document.querySelector("#account-password");
     const accountPasswordToggle = document.querySelector("[data-account-password-toggle]");
+    const accountSignIn = document.querySelector("[data-account-signin]");
     const storedIdentifier = sessionStorage.getItem("checkoutIdentifier");
     const recognisedEmail = "recognised@email.com";
 
@@ -228,6 +229,11 @@
     }
 
     setAccountMatch(email.value.trim().toLowerCase() === recognisedEmail && (storedValue("accountMatchVisible") === "true" || storedIdentifier?.trim().toLowerCase() === recognisedEmail));
+
+    accountSignIn?.addEventListener("click", () => {
+      seedOtpCheckoutDetails();
+      navigateTo("/payment/");
+    });
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
