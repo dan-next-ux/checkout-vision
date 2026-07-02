@@ -511,9 +511,10 @@ a {
   background: var(--action-default-enabled-background-color);
   color: var(--text-primary);
   font-family: "Next Display Text", Arial, sans-serif;
-  font-size: 38px;
+  font-size: 32px;
   line-height: 57px;
   text-align: center;
+  padding: 0;
 }
 
 .otp-input:focus {
