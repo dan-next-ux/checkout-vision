@@ -7,7 +7,7 @@
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
-    <link rel="stylesheet" href="/styles/styles.css?v=checkout-5">
+    <link rel="stylesheet" href="/styles/styles.css?v=checkout-6">
   </head>
   <body data-page="payment">
     <div class="app-frame">
@@ -37,7 +37,7 @@
 
       <aside class="top-ledger" aria-label="Order total">
         <div class="content-container">
-          <p>Total: <strong>£29.95</strong> <span>(Incl. £4.95 Delivery)</span></p>
+          <p>Total: <strong data-order-total>£29.95</strong> <span data-order-delivery-label>(Incl. £4.95 Delivery)</span></p>
           <button class="btn btn-small order-jump" type="button">VIEW ORDER</button>
         </div>
       </aside>
@@ -296,8 +296,8 @@
             </article>
 
             <div class="order-total">
-              <strong>Total (Incl. Delivery: £4.95)</strong>
-              <strong>£29.95</strong>
+              <strong data-order-total-label>Total (Incl. Delivery: £4.95)</strong>
+              <strong data-order-total>£29.95</strong>
             </div>
           </div>
         </div>
@@ -310,6 +310,6 @@
       </footer>
     </div>
 
-    <script src="/scripts/script.js?v=checkout-5"></script>
+    <script src="/scripts/script.js?v=checkout-6"></script>
   </body>
 </html>

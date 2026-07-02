@@ -1,5 +1,22 @@
 (function () {
   const page = document.body.dataset.page;
+  const deliveryLedger = {
+    home: {
+      total: "£29.95",
+      topLabel: "(Incl. £4.95 Delivery)",
+      summaryLabel: "Total (Incl. Delivery: £4.95)"
+    },
+    collection: {
+      total: "£25.00",
+      topLabel: "(Incl. Collection FREE)",
+      summaryLabel: "Total (Incl. Collection FREE)"
+    },
+    parcelshop: {
+      total: "£28.50",
+      topLabel: "(Incl. £3.50 Parcelshop)",
+      summaryLabel: "Total (Incl. Parcelshop: £3.50)"
+    }
+  };
   const deliveryDateLabels = {
     "wed-12": "Wednesday 12th July",
     "thu-13": "Thursday 13th July",
@@ -30,6 +47,25 @@
     if (input && value) {
       input.value = value;
     }
+  }
+
+  function deliveryTypeFromState() {
+    return sessionStorage.getItem("deliveryType") || "home";
+  }
+
+  function updateOrderLedger(type = deliveryTypeFromState()) {
+    const ledger = deliveryLedger[type] || deliveryLedger.home;
+    document.querySelectorAll("[data-order-total]").forEach((target) => {
+      target.textContent = ledger.total;
+    });
+    document.querySelectorAll("[data-order-delivery-label]").forEach((target) => {
+      target.textContent = ledger.topLabel;
+    });
+    document.querySelectorAll("[data-order-total-label]").forEach((target) => {
+      target.textContent = ledger.summaryLabel;
+    });
+    sessionStorage.setItem("orderTotal", ledger.total);
+    sessionStorage.setItem("orderDeliveryLabel", ledger.topLabel);
   }
 
   function selectedDeliveryDateLabel() {
@@ -242,6 +278,7 @@
         deliveryOptions.forEach((item) => item.classList.toggle("is-selected", item === option));
         sessionStorage.setItem("deliveryType", input.value);
         syncDeliveryTypeLayout();
+        updateOrderLedger(input.value);
       });
     });
 
@@ -308,6 +345,7 @@
 
     function saveDeliveryForm() {
       sessionStorage.setItem("deliveryType", document.querySelector("input[name='delivery-type']:checked")?.value || "home");
+      updateOrderLedger(sessionStorage.getItem("deliveryType"));
       sessionStorage.setItem("deliveryAddressLine1", addressInput.value.trim());
       sessionStorage.setItem("deliveryAddressLine2", addressLine2.value.trim());
       sessionStorage.setItem("deliveryTownCity", townCity.value.trim());
@@ -416,6 +454,7 @@
     }
 
     syncDeliveryTypeLayout();
+    updateOrderLedger(selectedDeliveryType());
 
     if (form) {
       form.addEventListener("submit", (event) => {
@@ -817,5 +856,6 @@
     initOrderComplete();
   }
 
+  updateOrderLedger();
   initOrderControls();
 })();
