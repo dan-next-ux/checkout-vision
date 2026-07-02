@@ -155,15 +155,25 @@
     const deliveryOptions = document.querySelectorAll(".delivery-option");
     const addressLookup = document.querySelector("[data-address-lookup]");
     const addressInput = document.querySelector("#address-line-1");
+    const addressInputLabel = document.querySelector("label[for='address-line-1']");
+    const addressSearchButton = addressLookup?.querySelector(".field-icon-button");
     const suggestions = document.querySelector("#address-suggestions");
     const addressLine2 = document.querySelector("#address-line-2");
     const townCity = document.querySelector("#town-city");
     const postcode = document.querySelector("#postcode");
     const phoneNumber = document.querySelector("#phone-number");
     const form = document.querySelector(".delivery-form");
+    const deliveryStep = document.querySelector(".delivery-step");
     const deliveryStates = document.querySelectorAll("[data-delivery-state]");
     const deliveryAddressTargets = document.querySelectorAll("[data-deliver-to]");
+    const collectionStoreTargets = document.querySelectorAll("[data-collect-from]");
     const deliveryDateTargets = document.querySelectorAll("[data-delivery-date]");
+    const detailFields = document.querySelectorAll("[data-delivery-detail-field]");
+    const collectionRequiredMarker = document.querySelector(".delivery-collection-required");
+    const deliveryQuestion = document.querySelector(".delivery-question");
+    const collectionSearchTarget = document.querySelector("[data-collection-search]");
+    const collectionContinue = document.querySelector("[data-collection-continue]");
+    const changeCollectionStore = document.querySelector("[data-change-collection-store]");
     let deliveryTimer;
     const addresses = [
       {
@@ -231,8 +241,37 @@
       input.addEventListener("change", () => {
         deliveryOptions.forEach((item) => item.classList.toggle("is-selected", item === option));
         sessionStorage.setItem("deliveryType", input.value);
+        syncDeliveryTypeLayout();
       });
     });
+
+    function selectedDeliveryType() {
+      return document.querySelector("input[name='delivery-type']:checked")?.value || "home";
+    }
+
+    function syncDeliveryTypeLayout() {
+      const isCollection = selectedDeliveryType() === "collection";
+      form.classList.toggle("is-collection", isCollection);
+      deliveryStep?.classList.toggle("is-collection-mode", isCollection);
+      if (deliveryQuestion) {
+        deliveryQuestion.textContent = isCollection ? "Where would you like to collect your order?" : "Where would you like us to deliver your order?";
+      }
+      if (addressInputLabel) {
+        addressInputLabel.innerHTML = `${isCollection ? "Find a store" : "Address Line 1"} <span class="required">*</span>`;
+      }
+      addressInput.placeholder = isCollection ? "Start typing a store name or postcode" : "Start typing your address and pick from the list";
+      addressSearchButton?.setAttribute("aria-label", isCollection ? "Search stores" : "Search address");
+      if (collectionRequiredMarker) {
+        collectionRequiredMarker.hidden = !isCollection;
+      }
+      detailFields.forEach((field) => {
+        field.hidden = isCollection;
+      });
+      addressLine2.required = !isCollection;
+      townCity.required = !isCollection;
+      postcode.required = !isCollection;
+      phoneNumber.required = !isCollection;
+    }
 
     function normalise(value) {
       return value.trim().toLowerCase();
@@ -255,6 +294,12 @@
       });
     }
 
+    function setCollectionStoreLabel(label) {
+      collectionStoreTargets.forEach((target) => {
+        target.textContent = label;
+      });
+    }
+
     function setDeliveryDateLabel(label) {
       deliveryDateTargets.forEach((target) => {
         target.textContent = label;
@@ -269,6 +314,42 @@
       sessionStorage.setItem("deliveryPostcode", postcode.value.trim());
       sessionStorage.setItem("deliveryPhoneNumber", phoneNumber.value.trim());
       sessionStorage.setItem("deliveryAddressLabel", selectedAddressLabel());
+    }
+
+    function selectedCollectionStoreLabel() {
+      const selectedStore = document.querySelector("input[name='collectionStore']:checked");
+      return selectedStore?.closest(".collection-store")?.querySelector("strong")?.textContent || "Next Leicester - Fosse Park";
+    }
+
+    function selectedCollectionStoreSummary() {
+      const selectedStore = document.querySelector("input[name='collectionStore']:checked")?.closest(".collection-store");
+      const storeName = selectedStore?.querySelector("strong")?.textContent.trim();
+      const storeAddress = selectedStore?.querySelector("small")?.textContent.trim();
+      return [storeName, storeAddress].filter(Boolean).join(", ") || "Next Leicester - Fosse Park, Fosse Park Avenue, Leicester, LE19 1HX";
+    }
+
+    function initCollectionStorePicker() {
+      if (collectionSearchTarget) {
+        collectionSearchTarget.textContent = addressInput.value.trim() || sessionStorage.getItem("collectionSearch") || "your search";
+      }
+
+      document.querySelectorAll(".collection-store").forEach((store) => {
+        const input = store.querySelector("input");
+        const storedStore = storedValue("collectionStore", "enderby");
+        input.checked = input.value === storedStore;
+        store.classList.toggle("is-selected", input.checked);
+        input.onchange = () => {
+          document.querySelectorAll(".collection-store").forEach((item) => item.classList.toggle("is-selected", item === store));
+          sessionStorage.setItem("collectionStore", input.value);
+          sessionStorage.setItem("deliveryAddressLabel", selectedCollectionStoreLabel());
+          sessionStorage.setItem("collectionStoreSummary", selectedCollectionStoreSummary());
+          setCollectionStoreLabel(selectedCollectionStoreSummary());
+        };
+      });
+
+      sessionStorage.setItem("deliveryAddressLabel", selectedCollectionStoreLabel());
+      sessionStorage.setItem("collectionStoreSummary", selectedCollectionStoreSummary());
+      setCollectionStoreLabel(selectedCollectionStoreSummary());
     }
 
     function matchingAddresses() {
@@ -334,12 +415,27 @@
       });
     }
 
+    syncDeliveryTypeLayout();
+
     if (form) {
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         clearTimeout(deliveryTimer);
         window.history.replaceState({}, "", "/delivery/");
         saveDeliveryForm();
+        if (selectedDeliveryType() === "collection") {
+          sessionStorage.setItem("collectionSearch", addressInput.value.trim());
+          showDeliveryState("collection-loading");
+          scrollToStep(".delivery-step");
+          deliveryTimer = window.setTimeout(() => {
+            sessionStorage.setItem("deliveryStage", "collection-results");
+            showDeliveryState("collection-results");
+            initCollectionStorePicker();
+            scrollToStep(".delivery-step");
+          }, 2000);
+          return;
+        }
+
         setDeliveryAddressLabel(selectedAddressLabel());
         showDeliveryState("loading");
         scrollToStep(".delivery-step");
@@ -351,10 +447,52 @@
       });
     }
 
+    if (collectionContinue) {
+      collectionContinue.addEventListener("click", () => {
+        clearTimeout(deliveryTimer);
+        sessionStorage.setItem("deliveryType", "collection");
+        sessionStorage.setItem("deliveryAddressLabel", selectedCollectionStoreLabel());
+        sessionStorage.setItem("collectionStoreSummary", selectedCollectionStoreSummary());
+        setCollectionStoreLabel(selectedCollectionStoreSummary());
+        showDeliveryState("collection-date-loading");
+        scrollToStep(".delivery-step");
+        deliveryTimer = window.setTimeout(() => {
+          sessionStorage.setItem("deliveryStage", "collection-dates");
+          showDeliveryState("collection-dates");
+          setCollectionStoreLabel(storedValue("collectionStoreSummary", selectedCollectionStoreSummary()));
+          initDatePicker();
+          scrollToStep(".delivery-step");
+        }, 2000);
+      });
+    }
+
+    if (changeCollectionStore) {
+      changeCollectionStore.addEventListener("click", () => {
+        clearTimeout(deliveryTimer);
+        sessionStorage.setItem("deliveryStage", "collection-results");
+        showDeliveryState("collection-results");
+        initCollectionStorePicker();
+        scrollToStep(".delivery-step");
+      });
+    }
+
     if (sessionStorage.getItem("deliveryStage") === "dates") {
       sessionStorage.removeItem("deliveryStage");
       setDeliveryAddressLabel(storedValue("deliveryAddressLabel", "12 Mill Hill, Enderby, Leicester, LE19 4AD"));
       showDeliveryState("dates");
+      initDatePicker();
+    }
+
+    if (sessionStorage.getItem("deliveryStage") === "collection-results") {
+      sessionStorage.removeItem("deliveryStage");
+      showDeliveryState("collection-results");
+      initCollectionStorePicker();
+    }
+
+    if (sessionStorage.getItem("deliveryStage") === "collection-dates") {
+      sessionStorage.removeItem("deliveryStage");
+      showDeliveryState("collection-dates");
+      setCollectionStoreLabel(storedValue("collectionStoreSummary", selectedCollectionStoreSummary()));
       initDatePicker();
     }
 
@@ -374,8 +512,7 @@
       });
     });
 
-    const dateContinue = document.querySelector("[data-date-continue]");
-    if (dateContinue) {
+    document.querySelectorAll("[data-date-continue]").forEach((dateContinue) => {
       dateContinue.addEventListener("click", () => {
         const selectedDate = document.querySelector("input[name='deliveryDate']:checked");
         if (selectedDate) {
@@ -385,7 +522,7 @@
         setStepScrollTarget("payment");
         window.location.href = "/payment/";
       });
-    }
+    });
   }
 
   function initPayment() {

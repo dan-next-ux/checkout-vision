@@ -7,7 +7,7 @@
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
-    <link rel="stylesheet" href="/styles/styles.css?v=checkout-2">
+    <link rel="stylesheet" href="/styles/styles.css?v=checkout-5">
   </head>
   <body data-page="delivery">
     <div class="app-frame">
@@ -80,9 +80,8 @@
             </div>
 
             <form class="delivery-form" action="/delivery/" method="get" novalidate data-delivery-state="address">
-              <p class="delivery-question">Where would you like us to delivery your order?</p>
-
-              <div class="field-row">
+              <p class="delivery-question">Where would you like us to deliver your order?</p>
+              <div class="field-row delivery-primary-field">
                 <label for="address-line-1">Address Line 1 <span class="required">*</span></label>
                 <div class="field-with-icon address-lookup" data-address-lookup>
                   <input class="text-input" id="address-line-1" name="addressLine1" type="text" autocomplete="off" placeholder="Start typing your address and pick from the list" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="address-suggestions" required>
@@ -93,12 +92,12 @@
                 </div>
               </div>
 
-              <div class="field-row">
+              <div class="field-row delivery-detail-field" data-delivery-detail-field>
                 <label for="address-line-2">Address Line 2 <span class="required">*</span></label>
                 <input class="text-input" id="address-line-2" name="addressLine2" type="text" autocomplete="address-line2" required>
               </div>
 
-              <div class="field-grid">
+              <div class="field-grid delivery-detail-field" data-delivery-detail-field>
                 <div class="field-row">
                   <label for="town-city">Town/City <span class="required">*</span></label>
                   <input class="text-input" id="town-city" name="townCity" type="text" autocomplete="address-level2" required>
@@ -110,7 +109,7 @@
                 </div>
               </div>
 
-              <div class="field-row">
+              <div class="field-row delivery-detail-field" data-delivery-detail-field>
                 <label for="phone-number">Phone Number <span class="required">*</span></label>
                 <input class="text-input" id="phone-number" name="phoneNumber" type="tel" autocomplete="tel" required>
                 <p class="helper-text">This allows us to send you order updates. You can also use this number to receive One Time Passcodes for quicker sign in in the future.</p>
@@ -149,6 +148,131 @@
 
                 <div class="skeleton-button-wrap">
                   <span class="skeleton skeleton-button"></span>
+                </div>
+              </section>
+            </div>
+
+            <div class="delivery-review collection-loading-review" data-delivery-state="collection-loading" hidden>
+              <section class="collection-loading" aria-label="Loading collection stores" aria-live="polite">
+                <span class="skeleton skeleton-heading"></span>
+                <div class="collection-loading-list" aria-hidden="true">
+                  <span class="skeleton skeleton-store-card"></span>
+                  <span class="skeleton skeleton-store-card"></span>
+                  <span class="skeleton skeleton-store-card"></span>
+                </div>
+                <span class="skeleton skeleton-button"></span>
+              </section>
+            </div>
+
+            <div class="delivery-review collection-results-review" data-delivery-state="collection-results" hidden>
+              <section class="collection-results" aria-labelledby="collection-results-title">
+                <h3 id="collection-results-title">Select a collection store <span class="required">*</span></h3>
+                <p class="collection-results-summary">Stores near <span data-collection-search>your search</span></p>
+
+                <div class="collection-store-list" role="radiogroup" aria-label="Collection stores">
+                  <label class="collection-store is-selected">
+                    <input type="radio" name="collectionStore" value="enderby" checked>
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="collection-store-copy">
+                      <strong>Next Leicester - Fosse Park</strong>
+                      <small>Fosse Park Avenue, Leicester, LE19 1HX</small>
+                      <small>Open today: 09:00 - 20:00</small>
+                    </span>
+                  </label>
+
+                  <label class="collection-store">
+                    <input type="radio" name="collectionStore" value="leicester-highcross">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="collection-store-copy">
+                      <strong>Next Leicester - Highcross</strong>
+                      <small>Highcross Shopping Centre, Leicester, LE1 4FR</small>
+                      <small>Open today: 09:30 - 20:00</small>
+                    </span>
+                  </label>
+
+                  <label class="collection-store">
+                    <input type="radio" name="collectionStore" value="blaby">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="collection-store-copy">
+                      <strong>Next Blaby</strong>
+                      <small>Johns Court, Blaby, Leicester, LE8 4DJ</small>
+                      <small>Open today: 09:00 - 18:00</small>
+                    </span>
+                  </label>
+                </div>
+
+                <button class="btn btn-primary" type="button" data-collection-continue>CONTINUE</button>
+              </section>
+            </div>
+
+            <div class="delivery-review collection-date-loading-review" data-delivery-state="collection-date-loading" hidden>
+              <div class="deliver-to">
+                <strong>Collect from:</strong>
+                <p data-collect-from>Next Leicester - Fosse Park, Fosse Park Avenue, Leicester, LE19 1HX</p>
+              </div>
+
+              <section class="parcel-loading" aria-label="Loading collection dates" aria-live="polite">
+                <div class="parcel-bar skeleton-group">
+                  <span class="skeleton skeleton-square"></span>
+                  <span class="skeleton skeleton-title"></span>
+                  <span class="skeleton skeleton-small"></span>
+                  <span class="chevron muted-chevron" aria-hidden="true"></span>
+                </div>
+
+                <div class="date-loading">
+                  <span class="skeleton skeleton-heading"></span>
+                  <div class="skeleton-date-row" aria-hidden="true">
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                    <span class="skeleton skeleton-date-chip"></span>
+                  </div>
+                  <span class="skeleton skeleton-line skeleton-line-long"></span>
+                  <span class="skeleton skeleton-line skeleton-line-short"></span>
+                </div>
+
+                <div class="skeleton-button-wrap">
+                  <span class="skeleton skeleton-button"></span>
+                </div>
+              </section>
+            </div>
+
+            <div class="delivery-review collection-dates-review" data-delivery-state="collection-dates" hidden>
+              <div class="deliver-to collect-from-summary">
+                <strong>Collect from:</strong>
+                <div class="collect-from-row">
+                  <p data-collect-from>Next Leicester - Fosse Park, Fosse Park Avenue, Leicester, LE19 1HX</p>
+                  <button class="text-link collect-from-change" type="button" data-change-collection-store>Change</button>
+                </div>
+              </div>
+
+              <section class="parcel-picker" aria-labelledby="collection-parcel-title">
+                <button class="parcel-bar parcel-summary" type="button" aria-expanded="true">
+                  <span class="parcel-label">
+                    <span class="parcel-home-icon" aria-hidden="true"></span>
+                    <strong id="collection-parcel-title">Parcel 1 of 1</strong>
+                    <small>(1 item)</small>
+                  </span>
+                  <span class="chevron muted-chevron" aria-hidden="true"></span>
+                </button>
+
+                <div class="date-picker-panel">
+                  <h3>Select Your Collection Date <span class="required">*</span></h3>
+                  <div class="delivery-date-row" role="radiogroup" aria-label="Collection date">
+                    <label class="date-chip is-selected"><input type="radio" name="deliveryDate" value="wed-12" checked><span>Wed</span><small>12th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="thu-13"><span>Thu</span><small>13th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="fri-14"><span>Fri</span><small>14th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="sat-15"><span>Sat</span><small>15th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="sun-16"><span>Sun</span><small>16th</small></label>
+                    <label class="date-chip"><input type="radio" name="deliveryDate" value="mon-17"><span>Mon</span><small>17th</small></label>
+                  </div>
+                  <p class="delivery-date-note">These items are available for collection after 1pm on your chosen collection date and up to 10 days after delivery. Find out more in our <a href="#">Terms and Conditions</a>.</p>
+                </div>
+
+                <div class="date-continue">
+                  <button class="btn btn-primary" type="button" data-date-continue>CONTINUE</button>
                 </div>
               </section>
             </div>
@@ -238,6 +362,6 @@
       </footer>
     </div>
 
-    <script src="/scripts/script.js?v=checkout-2"></script>
+    <script src="/scripts/script.js?v=checkout-5"></script>
   </body>
 </html>
