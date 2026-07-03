@@ -322,9 +322,11 @@
     const detailFields = document.querySelectorAll("[data-delivery-detail-field]");
     const collectionRequiredMarker = document.querySelector(".delivery-collection-required");
     const deliveryQuestion = document.querySelector(".delivery-question");
-    const collectionSearchTarget = document.querySelector("[data-collection-search]");
     const collectionContinue = document.querySelector("[data-collection-continue]");
     const changeCollectionStore = document.querySelector("[data-change-collection-store]");
+    const collectionResultsTitle = document.querySelector("#collection-results-title");
+    const collectionResultsSummary = document.querySelector(".collection-results-summary");
+    const collectionStoreList = document.querySelector(".collection-store-list");
     let deliveryTimer;
     const addresses = [
       {
@@ -363,6 +365,63 @@
         label: "4 Mill Hill Close, Whetstone, Leicester, LE8 6ZD"
       }
     ];
+    const pickupLocations = {
+      collection: {
+        fieldLabel: "Find a store",
+        placeholder: "Start typing a store name or postcode",
+        searchLabel: "Stores near",
+        searchButtonLabel: "Search stores",
+        resultsTitle: "Select a collection store",
+        resultsAriaLabel: "Collection stores",
+        defaultLocation: "enderby",
+        locations: [
+          {
+            id: "enderby",
+            name: "Next Leicester - Fosse Park",
+            address: "Fosse Park Avenue, Leicester, LE19 1HX",
+            meta: "Open today: 09:00 - 20:00"
+          },
+          {
+            id: "leicester-highcross",
+            name: "Next Leicester - Highcross",
+            address: "Highcross Shopping Centre, Leicester, LE1 4FR",
+            meta: "Open today: 09:30 - 20:00"
+          },
+          {
+            id: "blaby",
+            name: "Next Blaby",
+            address: "Johns Court, Blaby, Leicester, LE8 4DJ",
+            meta: "Open today: 09:00 - 18:00"
+          }
+        ]
+      },
+      parcelshop: {
+        fieldLabel: "Find a parcelshop",
+        placeholder: "Start typing a parcelshop name or postcode",
+        searchLabel: "Parcelshops near",
+        searchButtonLabel: "Search parcelshops",
+        resultsTitle: "Select a parcelshop",
+        resultsAriaLabel: "Parcelshops",
+        defaultLocation: "mercury-news",
+        locations: [
+          {
+            id: "mercury-news",
+            name: "Mercury News",
+            address: "5-7 Mill Lane, Enderby, LE19 4NW"
+          },
+          {
+            id: "evri-locker",
+            name: "Evri Locker",
+            address: "D&R News Ltd-Mercury News Shop, 5-7 Mill Lane, Enderby, LE19 4NW"
+          },
+          {
+            id: "costcutter",
+            name: "COSTCUTTER",
+            address: "110 Forest Road, Narborough, LE19 3EQ"
+          }
+        ]
+      }
+    };
 
     if (email && emailTarget) {
       emailTarget.textContent = email;
@@ -405,28 +464,38 @@
       return document.querySelector("input[name='delivery-type']:checked")?.value || "home";
     }
 
+    function isPickupDelivery(type = selectedDeliveryType()) {
+      return type === "collection" || type === "parcelshop";
+    }
+
+    function pickupConfig(type = selectedDeliveryType()) {
+      return pickupLocations[type] || pickupLocations.collection;
+    }
+
     function syncDeliveryTypeLayout() {
-      const isCollection = selectedDeliveryType() === "collection";
-      form.classList.toggle("is-collection", isCollection);
-      deliveryStep?.classList.toggle("is-collection-mode", isCollection);
+      const deliveryType = selectedDeliveryType();
+      const isPickup = isPickupDelivery(deliveryType);
+      const config = pickupConfig(deliveryType);
+      form.classList.toggle("is-collection", isPickup);
+      deliveryStep?.classList.toggle("is-collection-mode", isPickup);
       if (deliveryQuestion) {
-        deliveryQuestion.textContent = isCollection ? "Where would you like to collect your order?" : "Where would you like us to deliver your order?";
+        deliveryQuestion.textContent = isPickup ? "Where would you like to collect your order?" : "Where would you like us to deliver your order?";
       }
       if (addressInputLabel) {
-        addressInputLabel.innerHTML = `${isCollection ? "Find a store" : "Address Line 1"} <span class="required">*</span>`;
+        addressInputLabel.innerHTML = `${isPickup ? config.fieldLabel : "Address Line 1"} <span class="required">*</span>`;
       }
-      addressInput.placeholder = isCollection ? "Start typing a store name or postcode" : "Start typing your address and pick from the list";
-      addressSearchButton?.setAttribute("aria-label", isCollection ? "Search stores" : "Search address");
+      addressInput.placeholder = isPickup ? config.placeholder : "Start typing your address and pick from the list";
+      addressSearchButton?.setAttribute("aria-label", isPickup ? config.searchButtonLabel : "Search address");
       if (collectionRequiredMarker) {
-        collectionRequiredMarker.hidden = !isCollection;
+        collectionRequiredMarker.hidden = !isPickup;
       }
       detailFields.forEach((field) => {
-        field.hidden = isCollection;
+        field.hidden = isPickup;
       });
-      addressLine2.required = !isCollection;
-      townCity.required = !isCollection;
-      postcode.required = !isCollection;
-      phoneNumber.required = !isCollection;
+      addressLine2.required = !isPickup;
+      townCity.required = !isPickup;
+      postcode.required = !isPickup;
+      phoneNumber.required = !isPickup;
     }
 
     function normalise(value) {
@@ -475,25 +544,56 @@
 
     function selectedCollectionStoreLabel() {
       const selectedStore = document.querySelector("input[name='collectionStore']:checked");
-      return selectedStore?.closest(".collection-store")?.querySelector("strong")?.textContent || "Next Leicester - Fosse Park";
+      return selectedStore?.closest(".collection-store")?.querySelector("strong")?.textContent || pickupConfig().locations[0].name;
     }
 
     function selectedCollectionStoreSummary() {
       const selectedStore = document.querySelector("input[name='collectionStore']:checked")?.closest(".collection-store");
       const storeName = selectedStore?.querySelector("strong")?.textContent.trim();
       const storeAddress = selectedStore?.querySelector("small")?.textContent.trim();
-      return [storeName, storeAddress].filter(Boolean).join(", ") || "Next Leicester - Fosse Park, Fosse Park Avenue, Leicester, LE19 1HX";
+      const fallback = pickupConfig().locations[0];
+      return [storeName, storeAddress].filter(Boolean).join(", ") || `${fallback.name}, ${fallback.address}`;
     }
 
     function initCollectionStorePicker() {
+      const config = pickupConfig();
+      if (collectionResultsTitle) {
+        collectionResultsTitle.innerHTML = `${config.resultsTitle} <span class="required">*</span>`;
+      }
+      if (collectionResultsSummary) {
+        collectionResultsSummary.innerHTML = `${config.searchLabel} <span data-collection-search>your search</span>`;
+      }
+      if (collectionStoreList) {
+        collectionStoreList.setAttribute("aria-label", config.resultsAriaLabel);
+        collectionStoreList.innerHTML = "";
+        config.locations.forEach((location) => {
+          const store = document.createElement("label");
+          store.className = "collection-store";
+          store.innerHTML = `
+            <input type="radio" name="collectionStore" value="${location.id}">
+            <span class="radio-dot" aria-hidden="true"></span>
+            <span class="collection-store-copy">
+              <strong>${location.name}</strong>
+              <small>${location.address}</small>
+              ${location.meta ? `<small>${location.meta}</small>` : ""}
+            </span>
+          `;
+          collectionStoreList.append(store);
+        });
+      }
+
+      const collectionSearchTarget = document.querySelector("[data-collection-search]");
       if (collectionSearchTarget) {
         collectionSearchTarget.textContent = addressInput.value.trim() || sessionStorage.getItem("collectionSearch") || "your search";
       }
 
-      document.querySelectorAll(".collection-store").forEach((store) => {
+      const storedStore = storedValue("collectionStore", config.defaultLocation);
+      const stores = Array.from(document.querySelectorAll(".collection-store"));
+      let hasSelectedStore = false;
+      stores.forEach((store) => {
         const input = store.querySelector("input");
-        const storedStore = storedValue("collectionStore", "enderby");
         input.checked = input.value === storedStore;
+        hasSelectedStore = hasSelectedStore || input.checked;
         store.classList.toggle("is-selected", input.checked);
         input.onchange = () => {
           document.querySelectorAll(".collection-store").forEach((item) => item.classList.toggle("is-selected", item === store));
@@ -503,6 +603,11 @@
           setCollectionStoreLabel(selectedCollectionStoreSummary());
         };
       });
+      if (!hasSelectedStore && stores[0]) {
+        stores[0].querySelector("input").checked = true;
+        stores[0].classList.add("is-selected");
+        sessionStorage.setItem("collectionStore", stores[0].querySelector("input").value);
+      }
 
       sessionStorage.setItem("deliveryAddressLabel", selectedCollectionStoreLabel());
       sessionStorage.setItem("collectionStoreSummary", selectedCollectionStoreSummary());
@@ -579,9 +684,9 @@
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         clearTimeout(deliveryTimer);
-        window.history.replaceState({}, "", "/delivery/");
+        window.history.replaceState({}, "", routePath("/delivery/"));
         saveDeliveryForm();
-        if (selectedDeliveryType() === "collection") {
+        if (isPickupDelivery()) {
           sessionStorage.setItem("collectionSearch", addressInput.value.trim());
           showDeliveryState("collection-loading");
           scrollToStep(".delivery-step");
@@ -608,7 +713,7 @@
     if (collectionContinue) {
       collectionContinue.addEventListener("click", () => {
         clearTimeout(deliveryTimer);
-        sessionStorage.setItem("deliveryType", "collection");
+        sessionStorage.setItem("deliveryType", selectedDeliveryType());
         sessionStorage.setItem("deliveryAddressLabel", selectedCollectionStoreLabel());
         sessionStorage.setItem("collectionStoreSummary", selectedCollectionStoreSummary());
         setCollectionStoreLabel(selectedCollectionStoreSummary());
@@ -851,12 +956,12 @@
       }
 
       const checkboxLabel = useDeliveryAddressInput.closest(".card-checkbox");
-      const isCollectionDelivery = deliveryTypeFromState() === "collection";
-      useDeliveryAddressInput.disabled = isCollectionDelivery;
-      checkboxLabel?.classList.toggle("is-disabled", isCollectionDelivery);
-      useDeliveryAddressInput.setAttribute("aria-disabled", isCollectionDelivery ? "true" : "false");
+      const isPickupDelivery = deliveryTypeFromState() === "collection" || deliveryTypeFromState() === "parcelshop";
+      useDeliveryAddressInput.disabled = isPickupDelivery;
+      checkboxLabel?.classList.toggle("is-disabled", isPickupDelivery);
+      useDeliveryAddressInput.setAttribute("aria-disabled", isPickupDelivery ? "true" : "false");
 
-      if (isCollectionDelivery) {
+      if (isPickupDelivery) {
         useDeliveryAddressInput.checked = false;
         sessionStorage.setItem("paymentUseDeliveryAddress", "false");
       }
