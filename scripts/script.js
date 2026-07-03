@@ -165,6 +165,7 @@
       const identifier = input.value.trim();
       sessionStorage.setItem("checkoutIdentifier", identifier);
       sessionStorage.setItem("accountMatchVisible", identifier.toLowerCase() === recognisedEmail ? "true" : "false");
+      sessionStorage.setItem("accountMatchedSignin", "false");
       navigateTo("/your-details/");
     });
   }
@@ -240,6 +241,7 @@
       const firstName = document.querySelector("#first-name").value.trim();
       const lastName = document.querySelector("#last-name").value.trim();
       const password = document.querySelector("#password").value;
+      sessionStorage.setItem("accountMatchedSignin", "false");
       sessionStorage.setItem("checkoutEmail", email.value.trim() || "alex_smith@gmail.com");
       sessionStorage.setItem("checkoutFirstName", firstName);
       sessionStorage.setItem("checkoutLastName", lastName);
@@ -256,6 +258,7 @@
   function seedOtpCheckoutDetails() {
     sessionStorage.setItem("checkoutIdentifier", "alex_smith@gmail.com");
     sessionStorage.setItem("checkoutEmail", "alex_smith@gmail.com");
+    sessionStorage.setItem("accountMatchedSignin", "true");
     sessionStorage.setItem("checkoutFirstName", "Alex");
     sessionStorage.setItem("checkoutLastName", "Smith");
     sessionStorage.setItem("checkoutName", "Alex Smith");
@@ -1075,10 +1078,55 @@
   function initOrderComplete() {
     const email = sessionStorage.getItem("checkoutEmail") || sessionStorage.getItem("checkoutIdentifier");
     const emailTarget = document.querySelector("[data-complete-email]");
+    const countdown = document.querySelector("[data-delivery-offer-countdown]");
+    const signupPanel = document.querySelector(".signup-panel");
+    const passkeyPanel = document.querySelector("[data-passkey-panel]");
+    const showPasskeyPanel = sessionStorage.getItem("accountMatchedSignin") === "true";
 
     if (email && emailTarget) {
       emailTarget.textContent = email;
     }
+
+    if (signupPanel && passkeyPanel) {
+      signupPanel.hidden = showPasskeyPanel;
+      passkeyPanel.hidden = !showPasskeyPanel;
+    }
+
+    if (!countdown) {
+      return;
+    }
+
+    const countdownStartedAt = Date.now();
+    const countdownDuration = 30 * 60 * 1000;
+    const digitTargets = {
+      minutesTens: countdown.querySelector("[data-countdown-digit='minutes-tens']"),
+      minutesOnes: countdown.querySelector("[data-countdown-digit='minutes-ones']"),
+      secondsTens: countdown.querySelector("[data-countdown-digit='seconds-tens']"),
+      secondsOnes: countdown.querySelector("[data-countdown-digit='seconds-ones']")
+    };
+    let countdownTimer;
+
+    function updateDeliveryOfferCountdown() {
+      const remainingMs = Math.max(0, countdownDuration - (Date.now() - countdownStartedAt));
+      const remainingSeconds = Math.ceil(remainingMs / 1000);
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      const value = `${String(minutes).padStart(2, "0")}${String(seconds).padStart(2, "0")}`;
+
+      digitTargets.minutesTens.textContent = value[0];
+      digitTargets.minutesOnes.textContent = value[1];
+      digitTargets.secondsTens.textContent = value[2];
+      digitTargets.secondsOnes.textContent = value[3];
+      countdown.setAttribute("aria-label", `${minutes} minutes and ${seconds} seconds remaining`);
+      countdown.dateTime = `PT${minutes}M${seconds}S`;
+
+      if (remainingSeconds === 0) {
+        window.clearInterval(countdownTimer);
+      }
+    }
+
+    updateDeliveryOfferCountdown();
+    countdownTimer = window.setInterval(updateDeliveryOfferCountdown, 1000);
   }
 
   normaliseInternalPageLinks();

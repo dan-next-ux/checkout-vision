@@ -8,7 +8,7 @@
   <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles/fonts.css">
   <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
-  <link rel="stylesheet" href="/styles/styles.css?v=checkout-9">
+  <link rel="stylesheet" href="/styles/styles.css?v=checkout-11">
 </head>
 
 <body data-page="order-complete">
@@ -74,15 +74,18 @@
           </div>
         </div>
 
-        <aside class="delivery-offer">
-          <span class="delivery-offer-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <g id="delivery-m-default">
-    <path id="default" d="M22.3 6.45C22.04 5.59 21.19 5 20.24 5h-5.99V2H0v15c0 1.1.9 2 2 2 0 1.66 1.34 3 3 3s3-1.34 3-3h8c0 1.66 1.34 3 3 3s3-1.34 3-3v-.01c1.12-.07 2-.87 2-1.85v-6.38l-1.7-4.3v-.01ZM5 20.75c-.96 0-1.75-.79-1.75-1.75 0-.49.2-.93.53-1.25.32-.31.75-.5 1.22-.5s.91.19 1.22.5c.33.32.53.76.53 1.25 0 .96-.79 1.75-1.75 1.75ZM13 5v12.75H7.72A2.99 2.99 0 0 0 5 16a3 3 0 0 0-2.72 1.75H2c-.41 0-.75-.34-.75-.75V3.25H13V5Zm4.25 1.25h2.99c.41 0 .77.23.87.57v.05l.03.05 1.52 3.84H18c-.41 0-.75-.34-.75-.75V6.25ZM19 20.75c-.96 0-1.75-.79-1.75-1.75 0-.49.2-.93.53-1.25.32-.31.75-.5 1.22-.5s.91.19 1.22.5c.33.32.53.76.53 1.25 0 .96-.79 1.75-1.75 1.75Zm3.75-3.62c0 .29-.37.62-.9.62h-.13A2.99 2.99 0 0 0 19 16a3 3 0 0 0-2.72 1.75h-2.03V6.25H16V10c0 1.1.9 2 2 2h4.75v5.13Z"/>
-  </g>
-</svg>
-</span>
-          <p>Place another order within <strong>30 minutes</strong> and get free delivery. <a href="#">Terms and
-              Conditions apply</a></p>
+        <aside class="delivery-offer" aria-label="Free delivery countdown offer">
+          <div class="delivery-offer-copy">
+            <p>Free delivery if you order within</p>
+            <a href="#">Terms &amp; Conditions Apply</a>
+          </div>
+          <time class="delivery-offer-countdown" datetime="PT30M" data-delivery-offer-countdown aria-live="polite" aria-label="30 minutes remaining">
+            <span data-countdown-digit="minutes-tens">3</span>
+            <span data-countdown-digit="minutes-ones">0</span>
+            <strong aria-hidden="true">:</strong>
+            <span data-countdown-digit="seconds-tens">0</span>
+            <span data-countdown-digit="seconds-ones">0</span>
+          </time>
         </aside>
       </section>
 
@@ -113,26 +116,74 @@
         <button class="btn btn-primary" type="button">GREAT, SIGN ME UP</button>
       </form>
 
+      <section class="passkey-panel" data-passkey-panel hidden aria-labelledby="passkey-title">
+        <div class="passkey-content">
+          <div class="passkey-heading">
+            <span class="passkey-hero-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 48 48" focusable="false">
+                <circle cx="24" cy="24" r="24" fill="white"></circle>
+                <path d="M18 14a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-8 19v-3.5c0-3.6 2.9-6.5 6.5-6.5h3c1.7 0 3.3.7 4.5 1.8l-1.4 1.4a4.4 4.4 0 0 0-3.1-1.2h-3A4.5 4.5 0 0 0 12 31.5V33h11v2H10Zm22-16h3v4h4v3h-4v4h-3v-4h-4v-3h4v-4Z" fill="currentColor"></path>
+              </svg>
+            </span>
+            <h2 id="passkey-title">CREATE A PASSKEY</h2>
+          </div>
+
+          <p class="passkey-lede">Passkeys are faster, easier and safer than passwords.</p>
+          <p>With passkeys, you can log in with</p>
+
+          <ul class="passkey-methods" aria-label="Passkey login methods">
+            <li>
+              <span class="passkey-method-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
+                  <path d="M5 8V5h3M16 5h3v3M19 16v3h-3M8 19H5v-3M9 10.5v-.25M15 10.5v-.25M8.8 14.5c1.6 1.5 4.8 1.5 6.4 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </span>
+              Face ID
+            </li>
+            <li>
+              <span class="passkey-method-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 3.5a6.5 6.5 0 0 0-6.5 6.5M18.5 10A6.5 6.5 0 0 0 12 3.5M8 20c.8-1.7 1.2-3.6 1.2-5.7V10a2.8 2.8 0 1 1 5.6 0v4.2c0 1.9-.3 3.7-.9 5.3M5.3 14.5V10a6.7 6.7 0 0 1 .4-2.3M18.7 14.5V10c0-.8-.1-1.5-.4-2.2M11.2 20.5c.5-1.8.8-3.9.8-6.2V10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+              </span>
+              Touch ID
+            </li>
+            <li>
+              <span class="passkey-method-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
+                  <path d="M7 6h2v2H7V6Zm4 0h2v2h-2V6Zm4 0h2v2h-2V6ZM7 11h2v2H7v-2Zm4 0h2v2h-2v-2Zm4 0h2v2h-2v-2ZM7 16h2v2H7v-2Zm4 0h2v2h-2v-2Zm4 0h2v2h-2v-2Z" fill="currentColor"></path>
+                </svg>
+              </span>
+              Passcode
+            </li>
+          </ul>
+        </div>
+
+        <div class="passkey-actions">
+          <button class="btn btn-primary" type="button">CREATE PASSKEY</button>
+        </div>
+      </section>
+
       <section class="recommendations" aria-labelledby="recommendations-title">
         <h2 id="recommendations-title">You May Also Like</h2>
         <div class="recommendation-row">
           <article class="recommendation-card">
-            <img src="/images/product-striped-top.png" alt="Monochrome striped rib halter neck vest">
+            <img src="/images/product1.jpg" alt="Monochrome striped rib halter neck vest">
             <strong>£17</strong>
             <p>Next Monochrome Striped Rib Halter Neck Vest</p>
           </article>
           <article class="recommendation-card">
-            <img src="/images/product-striped-top.png" alt="White relaxed boxy elbow length crew neck T-shirt">
+            <img src="/images/product2.jpg" alt="White relaxed boxy elbow length crew neck T-shirt">
             <strong>£10</strong>
             <p>Next White Relaxed Boxy Elbow Length Crew Neck T-Shirt</p>
           </article>
           <article class="recommendation-card">
-            <img src="/images/product-striped-top.png" alt="Gold tone floral necklace">
+            <img src="/images/product3.jpg" alt="Gold tone floral necklace">
             <strong>£12</strong>
             <p>Next Gold Tone Floral 3 Row Necklace</p>
           </article>
           <article class="recommendation-card">
-            <img src="/images/product-striped-top.png" alt="White ruched tie detail top">
+            <img src="/images/product4.jpg" alt="White ruched tie detail top">
             <strong>£10</strong>
             <p>Next White Ruched Tie Detail Cotton Top</p>
           </article>
@@ -140,11 +191,7 @@
       </section>
 
       <section class="promo-tile" aria-label="Boys bedroom promotion">
-        <div>
-          <h2>BOYS' BEDROOM</h2>
-          <p>Pack it with personality</p>
-        </div>
-        <a class="btn btn-secondary" href="#">SHOP NOW</a>
+        <img src="/images/2up-ordercomplete.jpg" style="width: 100%;">
       </section>
     </main>
 
@@ -155,7 +202,7 @@
     </footer>
   </div>
 
-  <script src="/scripts/script.js?v=checkout-9"></script>
+  <script src="/scripts/script.js?v=checkout-11"></script>
 </body>
 
 </html>
