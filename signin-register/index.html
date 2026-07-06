@@ -7,7 +7,7 @@
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
-    <link rel="stylesheet" href="/styles/styles.css?v=checkout-11">
+    <link rel="stylesheet" href="/styles/styles.css?v=checkout-14">
   </head>
   <body data-page="signin-register">
     <div class="app-frame">
@@ -65,7 +65,7 @@
 
             <div class="express-block">
               <h2>Checkout now with express payment</h2>
-              <button class="apple-pay-button" type="button">
+              <button class="apple-pay-button" type="button" data-apple-pay-trigger>
                 <span>Buy with</span>
                 <strong><span aria-hidden="true"></span>Pay</strong>
               </button>
@@ -75,10 +75,15 @@
               By proceeding with your payment, you agree to the <a href="#">Terms and Conditions</a>. To find out how we process your personal data please see our <a href="#">Privacy and Cookie Policy</a>.
             </p>
           </section>
+
+          <div class="apple-pay-toast" data-apple-pay-toast hidden role="status" aria-live="polite">
+            <p>Apple Pay Sheet Displayed</p>
+            <button class="btn btn-primary" type="button" data-apple-pay-complete>Complete Payment</button>
+          </div>
         </div>
       </main>
     </div>
 
-    <script src="/scripts/script.js?v=checkout-11"></script>
+    <script src="/scripts/script.js?v=checkout-14"></script>
   </body>
 </html>

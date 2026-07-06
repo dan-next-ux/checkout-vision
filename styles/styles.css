@@ -438,6 +438,38 @@ a {
   line-height: 28px;
 }
 
+.apple-pay-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100% - 32px, 536px);
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  background: var(--background-paper);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.apple-pay-toast[hidden] {
+  display: none;
+}
+
+.apple-pay-toast p {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: "Next Display", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 27px;
+  text-align: center;
+}
+
 .otp-main {
   padding: 16px;
 }
@@ -1916,6 +1948,170 @@ a {
   line-height: 21px;
 }
 
+.order-complete-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.order-complete-details[hidden] {
+  display: none;
+}
+
+.complete-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.complete-detail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.complete-detail-block + .complete-detail-block {
+  padding-left: 16px;
+  border-left: 1px solid var(--components-divider-default-border-color, #eeeeee);
+}
+
+.complete-detail-block strong,
+.complete-order-title-row strong,
+.complete-order-title-row span {
+  color: var(--text-primary);
+  font-family: "Next Display Text", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.complete-detail-block p,
+.complete-help-copy,
+.complete-order-copy p,
+.complete-order-meta,
+.complete-order-summary span,
+.complete-order-summary strong {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.complete-detail-block p,
+.complete-detail-block span,
+.complete-order-copy {
+  min-width: 0;
+}
+
+.complete-detail-block p span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.complete-order-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.complete-order-detail h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: "Next Display", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.complete-order-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.complete-order-item img {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 78px;
+  object-fit: cover;
+}
+
+.complete-order-copy {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.complete-order-title-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.complete-order-title-row strong {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.complete-order-title-row span {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.complete-order-copy p {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.complete-order-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.complete-order-meta span + span {
+  padding-left: 8px;
+  border-left: 1px solid var(--components-divider-default-border-color, #eeeeee);
+}
+
+.complete-order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px 0;
+  background: var(--background-main);
+}
+
+.complete-order-summary div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.complete-order-summary-total {
+  margin-top: 4px;
+  padding: 8px 0;
+  border-top: 1px solid var(--action-default-enabled-border-color, #949494);
+}
+
+.complete-help-copy {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.complete-help-copy a {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
 .delivery-offer {
   display: flex;
   align-items: center;
@@ -1924,7 +2120,7 @@ a {
   min-height: 56px;
   padding: 12px 16px;
   border-radius: 4px;
-  background: rgba(142, 68, 173, 0.04);
+  background: var(--primary-shades-4p, rgba(0, 0, 0, 0.04));
 }
 
 .delivery-offer-copy {
@@ -2045,7 +2241,7 @@ a {
   flex-direction: column;
   overflow: hidden;
   border-radius: 4px;
-  background: rgba(142, 68, 173, 0.04);
+  background: var(--primary-shades-4p, rgba(0, 0, 0, 0.04));
 }
 
 .passkey-panel[hidden] {

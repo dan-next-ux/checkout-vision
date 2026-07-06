@@ -149,6 +149,9 @@
     const form = document.querySelector(".signin-card");
     const input = document.querySelector("#signin-identifier");
     const row = input.closest(".field-row");
+    const applePayTrigger = document.querySelector("[data-apple-pay-trigger]");
+    const applePayToast = document.querySelector("[data-apple-pay-toast]");
+    const applePayComplete = document.querySelector("[data-apple-pay-complete]");
     const recognisedEmail = "recognised@email.com";
 
     input.value = sessionStorage.getItem("checkoutIdentifier") || "";
@@ -168,6 +171,28 @@
       sessionStorage.setItem("accountMatchedSignin", "false");
       navigateTo("/your-details/");
     });
+
+    if (applePayTrigger && applePayToast && applePayComplete) {
+      applePayTrigger.addEventListener("click", () => {
+        applePayToast.hidden = false;
+        applePayComplete.focus();
+      });
+
+      applePayComplete.addEventListener("click", () => {
+        sessionStorage.setItem("checkoutIdentifier", "apple_pay_customer@example.com");
+        sessionStorage.setItem("checkoutEmail", "apple_pay_customer@example.com");
+        sessionStorage.setItem("checkoutName", "Apple Pay Customer");
+        sessionStorage.setItem("checkoutFirstName", "Apple Pay");
+        sessionStorage.setItem("checkoutLastName", "Customer");
+        sessionStorage.setItem("accountMatchVisible", "false");
+        sessionStorage.setItem("accountMatchedSignin", "false");
+        sessionStorage.setItem("deliveryType", "home");
+        sessionStorage.setItem("deliveryAddressLabel", "Apple Pay delivery address");
+        sessionStorage.setItem("deliveryDateLabel", "Express delivery");
+        updateOrderLedger("home");
+        navigateTo("/order-complete/");
+      });
+    }
   }
 
   function initDetails() {
@@ -1081,6 +1106,14 @@
     const countdown = document.querySelector("[data-delivery-offer-countdown]");
     const signupPanel = document.querySelector(".signup-panel");
     const passkeyPanel = document.querySelector("[data-passkey-panel]");
+    const detailsToggle = document.querySelector("[data-order-details-toggle]");
+    const detailsPanel = document.querySelector("[data-order-complete-details]");
+    const completeName = document.querySelector("[data-complete-name]");
+    const completeAddress = document.querySelector("[data-complete-address]");
+    const completeDeliveryType = document.querySelector("[data-complete-delivery-type]");
+    const completeDeliveryLines = document.querySelector("[data-complete-delivery-lines]");
+    const completeDeliveryCost = document.querySelector("[data-complete-delivery-cost]");
+    const completeOrderTotal = document.querySelector("[data-complete-order-total]");
     const showPasskeyPanel = sessionStorage.getItem("accountMatchedSignin") === "true";
 
     if (email && emailTarget) {
@@ -1090,6 +1123,104 @@
     if (signupPanel && passkeyPanel) {
       signupPanel.hidden = showPasskeyPanel;
       passkeyPanel.hidden = !showPasskeyPanel;
+    }
+
+    function splitAddressLabel(label) {
+      return label
+        .split(",")
+        .map((part) => part.trim())
+        .filter(Boolean);
+    }
+
+    function deliveryAddressLines(type) {
+      if (type === "collection" || type === "parcelshop") {
+        return splitAddressLabel(storedValue("deliveryAddressLabel", "Next Leicester - Fosse Park"));
+      }
+
+      const structuredAddress = [
+        storedValue("deliveryAddressLine1"),
+        storedValue("deliveryAddressLine2"),
+        storedValue("deliveryTownCity"),
+        storedValue("deliveryPostcode")
+      ].filter(Boolean);
+
+      if (structuredAddress.length > 0) {
+        return structuredAddress;
+      }
+
+      return splitAddressLabel(storedValue("deliveryAddressLabel", "12 Mill Hill, Enderby, Leicester, LE19 4AD"));
+    }
+
+    function renderLineList(target, lines) {
+      if (!target) {
+        return;
+      }
+      target.innerHTML = "";
+      lines.filter(Boolean).forEach((line) => {
+        const span = document.createElement("span");
+        span.textContent = line;
+        target.append(span);
+      });
+    }
+
+    function deliveryDetailLines(type) {
+      const dateLabel = storedValue("deliveryDateLabel", "Friday 21st April");
+      if (type === "collection") {
+        return ["Collect From Store", dateLabel, "After 1pm"];
+      }
+      if (type === "parcelshop") {
+        return ["Collect From Parcelshop", dateLabel, "After 1pm"];
+      }
+      if (dateLabel === "Express delivery") {
+        return ["Express Delivery", "Apple Pay", "(Confirmed)"];
+      }
+      return ["Next Day Delivery", dateLabel, "(Anytime)"];
+    }
+
+    function deliveryTypeLabel(type) {
+      if (type === "collection") {
+        return "Collection";
+      }
+      if (type === "parcelshop") {
+        return "Parcelshop";
+      }
+      return "Home Delivery";
+    }
+
+    function deliveryCost(type) {
+      if (type === "collection") {
+        return "FREE";
+      }
+      if (type === "parcelshop") {
+        return "£3.50";
+      }
+      return "£4.95";
+    }
+
+    const deliveryType = deliveryTypeFromState();
+    const addressLines = deliveryAddressLines(deliveryType);
+    if (completeName) {
+      completeName.textContent = storedValue("checkoutName", "Alex Smith");
+    }
+    renderLineList(completeAddress, addressLines);
+    if (completeDeliveryType) {
+      completeDeliveryType.textContent = deliveryTypeLabel(deliveryType);
+    }
+    renderLineList(completeDeliveryLines, deliveryDetailLines(deliveryType));
+    if (completeDeliveryCost) {
+      completeDeliveryCost.textContent = deliveryCost(deliveryType);
+    }
+    if (completeOrderTotal) {
+      completeOrderTotal.textContent = storedValue("orderTotal", (deliveryLedger[deliveryType] || deliveryLedger.home).total);
+    }
+
+    if (detailsToggle && detailsPanel) {
+      detailsToggle.addEventListener("click", () => {
+        const isExpanded = detailsToggle.getAttribute("aria-expanded") === "true";
+        detailsPanel.hidden = isExpanded;
+        detailsToggle.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+        detailsToggle.textContent = isExpanded ? "Show Details" : "Hide Details";
+      });
     }
 
     if (!countdown) {
