@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Single Page Checkout | Checkout Vision</title>
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/Next_Revision.vars.css">
+    <link rel="stylesheet" href="/styles/styles.css?v=checkout-15">
+  </head>
+  <body data-page="single-page">
+    <div class="app-frame single-page-frame">
+      <header class="brand-bar" aria-label="Checkout header">
+        <div class="brand-side">
+          <button class="icon-button" type="button" aria-label="Secure checkout">
+            <img src="/images/secure-m-default.svg" alt="">
+          </button>
+        </div>
+        <a class="brand-logo" href="../signin-register/" aria-label="Next home">
+          <img src="/images/new-next-logo.svg" alt="NEXT">
+        </a>
+        <div class="brand-side brand-side-right no-help">
+          <button class="icon-button bag-button" type="button" aria-label="Bag with 1 item">
+            <img src="/images/shopping-bag-small.svg" alt="">
+            <span class="bag-count">1</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="page-nav" aria-label="Page">
+        <a class="icon-button nav-back" href="../signin-register/" aria-label="Back">
+          <img src="/images/chevron-left-m-default.svg" alt="">
+        </a>
+        <h1>Guest Checkout</h1>
+      </nav>
+
+      <aside class="top-ledger" aria-label="Order total">
+        <div class="content-container">
+          <p>Total: <strong data-order-total>£29.95</strong> <span data-order-delivery-label>(Incl. £4.95 Delivery)</span></p>
+          <button class="btn btn-small btn-secondary order-jump" type="button">VIEW ORDER</button>
+        </div>
+      </aside>
+
+      <main class="content-area">
+        <div class="content-container details-main single-page-main">
+
+
+            <div class="single-express-block">
+              <p class="express-heading">Checkout now with express payment</p>
+              <button class="apple-pay-button" type="button" data-single-apple-pay>Buy with Pay</button>
+              <p class="terms-copy">By proceeding with your payment, you agree to the <a href="#">Terms and Conditions</a>. To find out how we process your personal data please see our <a href="#">Privacy and Cookie Policy</a>.</p>
+            </div>
+          </section>
+
+          <section class="checkout-step single-details-step is-active" data-single-section="details" aria-labelledby="single-details-title">
+            <div class="step-heading">
+              <h2 id="single-details-title"><span>1.</span> Your Details</h2>
+              <p>Required Fields <span class="required">*</span></p>
+            </div>
+            <form class="details-form" data-single-details-form novalidate>
+              <div class="field-row">
+                <label for="single-email">Email Address <span class="required">*</span></label>
+                <input class="text-input" id="single-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field-row">
+                <label for="single-first-name">First Name <span class="required">*</span></label>
+                <input class="text-input" id="single-first-name" name="firstName" type="text" autocomplete="given-name" required>
+              </div>
+              <div class="field-row">
+                <label for="single-last-name">Last Name <span class="required">*</span></label>
+                <input class="text-input" id="single-last-name" name="lastName" type="text" autocomplete="family-name" required>
+              </div>
+              <div class="field-row">
+                <label class="optional-label" for="single-password"><span>Password</span> <em>Optional</em></label>
+                <input class="text-input" id="single-password" name="password" type="password" autocomplete="new-password">
+                <p class="helper-text">Enter a password to check out faster next time by creating an account</p>
+              </div>
+              <section class="marketing" aria-label="Marketing preferences">
+                <p>Tick the relevant box to opt out of <strong>NEXT offers</strong>, <strong>updates</strong> and the chance of <strong>exclusive Next Sale access</strong>.</p>
+                <div class="checkbox-grid">
+                  <label><input type="checkbox" name="marketing" value="email"> Email</label>
+                  <label><input type="checkbox" name="marketing" value="sms"> SMS</label>
+                  <label><input type="checkbox" name="marketing" value="post"> Post</label>
+                </div>
+              </section>
+              <p class="preference-note">You can opt out at any time using the unsubscribe link in our messages or by amending your preferences in My Account.<br>To find out more, see our <a href="#">Privacy and Cookie Policy</a>.</p>
+            </form>
+          </section>
+
+          <section class="checkout-step delivery-step is-active" data-single-section="delivery" aria-labelledby="single-delivery-title">
+            <h2 id="single-delivery-title"><span>2.</span> Delivery</h2>
+            <div class="delivery-tabs" role="radiogroup" aria-label="Delivery type">
+              <label class="delivery-option is-selected"><input type="radio" name="single-delivery-type" value="home" checked><span class="radio-dot" aria-hidden="true"></span><span><strong>Home</strong><small>£4.95</small></span></label>
+              <label class="delivery-option"><input type="radio" name="single-delivery-type" value="collection"><span class="radio-dot" aria-hidden="true"></span><span><strong>Collection</strong><small>FREE</small></span></label>
+              <label class="delivery-option"><input type="radio" name="single-delivery-type" value="parcelshop"><span class="radio-dot" aria-hidden="true"></span><span><strong>Parcelshop</strong><small>£3.50</small></span></label>
+            </div>
+
+            <form class="delivery-form" data-single-delivery-form data-delivery-state="address" novalidate>
+              <p class="delivery-question" data-single-delivery-question>Where would you like us to deliver your order?</p>
+              <div class="field-row delivery-primary-field">
+                <label for="single-address-line-1" data-single-delivery-label>Address Line 1 <span class="required">*</span></label>
+                <div class="field-with-icon address-lookup" data-address-lookup>
+                  <input class="text-input" id="single-address-line-1" name="addressLine1" type="text" autocomplete="off" placeholder="Start typing your address and pick from the list" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="single-address-suggestions" required>
+                  <button class="field-icon-button" type="button" aria-label="Search address"><img src="/images/search.svg" alt=""></button>
+                  <div class="address-suggestions" id="single-address-suggestions" role="listbox" aria-label="Address matches"></div>
+                </div>
+              </div>
+              <div class="field-row delivery-detail-field" data-single-home-field>
+                <label for="single-address-line-2">Address Line 2</label>
+                <input class="text-input" id="single-address-line-2" name="addressLine2" type="text" autocomplete="address-line2">
+              </div>
+              <div class="field-grid delivery-detail-field" data-single-home-field>
+                <div class="field-row"><label for="single-town-city">Town/City <span class="required">*</span></label><input class="text-input" id="single-town-city" name="townCity" type="text" autocomplete="address-level2"></div>
+                <div class="field-row"><label for="single-postcode">Postcode <span class="required">*</span></label><input class="text-input" id="single-postcode" name="postcode" type="text" autocomplete="postal-code"></div>
+              </div>
+              <div class="field-row delivery-detail-field" data-single-home-field>
+                <label for="single-phone-number">Phone Number <span class="required">*</span></label>
+                <input class="text-input" id="single-phone-number" name="phoneNumber" type="tel" autocomplete="tel">
+                <p class="helper-text">This allows us to send you order updates. You can also use this number to receive One Time Passcodes for quicker sign in in the future.</p>
+              </div>
+              <section class="single-delivery-date-prompt" data-single-date-prompt aria-live="polite">
+                <h3>Delivery Date</h3>
+                <div class="single-date-placeholder" data-single-date-placeholder>Enter a delivery address to view available dates</div>
+              </section>
+              <button class="btn btn-primary" type="submit" data-single-delivery-submit>CONTINUE</button>
+            </form>
+
+            <div class="delivery-review" data-single-delivery-state="loading" hidden>
+              <div class="deliver-to"><strong data-single-loading-label>Deliver to:</strong><p data-single-deliver-to>12 Mill Hill, Enderby, Leicester, LE19 4AD</p></div>
+              <section class="parcel-loading" aria-live="polite"><span class="skeleton skeleton-heading"></span><div class="skeleton-date-row"><span class="skeleton skeleton-date-chip"></span><span class="skeleton skeleton-date-chip"></span><span class="skeleton skeleton-date-chip"></span></div><span class="skeleton skeleton-button"></span></section>
+            </div>
+
+            <div class="delivery-review collection-results-review" data-single-delivery-state="pickup-results" hidden>
+              <section class="collection-results">
+                <h3 data-single-pickup-results-title>Select a collection store <span class="required">*</span></h3>
+                <p class="collection-results-summary" data-single-pickup-results-summary>Stores near your search</p>
+                <div class="collection-store-list" role="radiogroup" aria-label="Pickup locations" data-single-pickup-list></div>
+                <button class="btn btn-primary" type="button" data-single-pickup-continue>CONTINUE</button>
+              </section>
+            </div>
+
+            <div class="delivery-review" data-single-delivery-state="dates" hidden>
+              <div class="deliver-to">
+                <strong data-single-dates-label>Deliver to:</strong>
+                <p data-single-dates-address>12 Mill Hill, Enderby, Leicester, LE19 4AD</p>
+                <button class="link-button" type="button" data-single-change-pickup hidden>Change</button>
+              </div>
+              <section class="delivery-date-picker" aria-labelledby="single-date-title">
+                <h3 id="single-date-title" data-single-date-title>Choose a delivery date</h3>
+                <div class="date-options" role="radiogroup" aria-label="Available dates">
+                  <label class="date-chip is-selected"><input type="radio" name="single-date" value="Wednesday 12th July" checked><span>Wed</span><strong>12</strong></label>
+                  <label class="date-chip"><input type="radio" name="single-date" value="Thursday 13th July"><span>Thu</span><strong>13</strong></label>
+                  <label class="date-chip"><input type="radio" name="single-date" value="Friday 14th July"><span>Fri</span><strong>14</strong></label>
+                  <label class="date-chip"><input type="radio" name="single-date" value="Friday 14th July"><span>Sat</span><strong>15</strong></label>
+                  <label class="date-chip"><input type="radio" name="single-date" value="Friday 14th July"><span>Sun</span><strong>16</strong></label>
+                  <label class="date-chip"><input type="radio" name="single-date" value="Friday 14th July"><span>Mon</span><strong>17</strong></label>
+                  <label class="date-chip"><input type="radio" name="single-date" value="Friday 14th July"><span>Tue</span><strong>18</strong></label>
+
+                </div>
+                <button class="btn btn-primary" type="button" data-single-delivery-continue>CONTINUE</button>
+              </section>
+            </div>
+          </section>
+
+          <section class="checkout-step payment-step is-active" data-single-section="payment" aria-labelledby="single-payment-title">
+            <h2 id="single-payment-title"><span>3.</span> Payment</h2>
+            <div class="payment-methods" role="radiogroup" aria-label="Payment methods">
+              <button class="payment-method credit-method is-selected" type="button" role="radio" aria-checked="true" aria-expanded="true" data-single-payment-card>
+                <span class="payment-method-main"><span class="radio-dot" aria-hidden="true"></span><span class="payment-copy"><strong>Credit / Debit Card</strong></span></span>
+                <span aria-hidden="true">▣</span>
+              </button>
+              <section class="card-panel" aria-label="Credit / Debit Card details">
+                <div class="card-frame">
+                  <label class="card-checkbox">
+                    <input id="single-use-delivery-address" name="useDeliveryAddress" type="checkbox" checked>
+                    <span aria-hidden="true"></span>
+                    Use same billing address as delivery address
+                  </label>
+                  <div class="billing-address-fields" data-single-billing-fields hidden>
+                    <strong>Billing Address</strong>
+                    <div class="field-row"><label for="single-billing-address-line-1">Address Line 1 <span class="required">*</span></label><input class="text-input card-input" id="single-billing-address-line-1" type="text" placeholder="Start typing your address and pick from the list"></div>
+                    <div class="field-row"><label for="single-billing-address-line-2">Address Line 2 <span class="required">*</span></label><input class="text-input card-input" id="single-billing-address-line-2" type="text"></div>
+                    <div class="field-grid"><div class="field-row"><label for="single-billing-town">Town/City <span class="required">*</span></label><input class="text-input card-input" id="single-billing-town" type="text"></div><div class="field-row"><label for="single-billing-postcode">Postcode <span class="required">*</span></label><input class="text-input card-input" id="single-billing-postcode" type="text"></div></div>
+                  </div>
+                  <div class="card-logos" aria-label="Accepted cards"><span class="card-logo visa">VISA</span><span class="card-logo mastercard"><i></i><i></i></span><span class="card-logo amex">AMEX</span><span class="card-logo maestro"><i></i><i></i><em>maestro</em></span><span class="card-logo diners">Diners Club</span></div>
+                  <div class="field-row"><label for="single-card-number">Card Number <span class="required">*</span></label><input class="text-input card-input" id="single-card-number" type="text" inputmode="numeric" autocomplete="cc-number"></div>
+                  <div class="field-row"><label for="single-cardholder-name">Cardholder's Name <span class="required">*</span></label><input class="text-input card-input" id="single-cardholder-name" type="text" autocomplete="cc-name"></div>
+                  <div class="card-field-grid"><div class="field-row"><label for="single-expiry-date">Expiry Date <span class="required">*</span></label><input class="text-input card-input" id="single-expiry-date" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY"></div><div class="field-row"><label class="security-label" for="single-security-code">Security Code <span class="help-dot" aria-hidden="true">?</span></label><input class="text-input card-input" id="single-security-code" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC"></div></div>
+                  <label class="card-checkbox"><input id="single-save-card" type="checkbox"><span aria-hidden="true"></span>Save this card for faster payment</label>
+                  <p class="payment-note">We only accept payments from cards that are registered at your billing address.</p>
+                  <button class="btn btn-primary" type="button" data-single-pay-now>PAY NOW</button>
+                </div>
+              </section>
+              <button class="payment-method" type="button" role="radio" aria-checked="false"><span class="payment-method-main"><span class="radio-dot" aria-hidden="true"></span><span class="payment-copy"><strong>Paypal*</strong></span></span><span class="payment-badge">P</span></button>
+              <button class="payment-method" type="button" role="radio" aria-checked="false"><span class="payment-method-main"><span class="radio-dot" aria-hidden="true"></span><span class="payment-copy"><strong>Google Pay</strong></span></span><span class="gpay-mark">G Pay</span></button>
+              <button class="payment-method" type="button" role="radio" aria-checked="false"><span class="payment-method-main"><span class="radio-dot" aria-hidden="true"></span><span class="payment-copy"><strong>Giftcard / eVoucher</strong></span></span><span aria-hidden="true">▣</span></button>
+            </div>
+            <p class="terms-copy">We will request payment for the full amount on completion of your order. By selecting a payment option you confirm that you have read, understood and accept our <a href="#">Terms &amp; Conditions</a>, <a href="#">Returns Policy</a> and <a href="#">Privacy Policy</a>.</p>
+          </section>
+
+          
+        </div>
+      </main>
+
+      <div class="single-apple-toast" data-single-apple-toast hidden role="status" aria-live="polite">
+        <strong>Apple Pay Sheet Displayed</strong>
+        <button class="btn btn-primary" type="button" data-single-apple-complete>Complete Payment</button>
+      </div>
+
+      <footer class="checkout-footer">
+        <div class="content-container"><p>©2026 Next. All Rights Reserved.</p></div>
+      </footer>
+    </div>
+
+    <script src="/scripts/script.js?v=checkout-15"></script>
+  </body>
+</html>

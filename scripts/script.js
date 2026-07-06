@@ -1260,6 +1260,527 @@
     countdownTimer = window.setInterval(updateDeliveryOfferCountdown, 1000);
   }
 
+  function initSinglePage() {
+    const sections = {
+      entry: document.querySelector("[data-single-section='entry']"),
+      details: document.querySelector("[data-single-section='details']"),
+      delivery: document.querySelector("[data-single-section='delivery']"),
+      payment: document.querySelector("[data-single-section='payment']"),
+      complete: document.querySelector("[data-single-section='complete']")
+    };
+    const knownAddresses = [
+      "12 Mill Hill, Enderby, Leicester, LE19 4AD",
+      "22 Mill Hill Road, Enderby, Leicester, LE19 4AL",
+      "48 High Street, Leicester, LE1 5YP",
+      "8 King Street, Leicester, LE1 6RJ",
+      "101 Narborough Road, Leicester, LE3 0PA"
+    ];
+    const pickupLocations = {
+      collection: [
+        ["Next Leicester - Fosse Park", "Fosse Park Avenue, Leicester, LE19 1HX", "Open today: 09:00 - 20:00"],
+        ["Next Leicester - Highcross", "Highcross Shopping Centre, Leicester, LE1 4FR", "Open today: 09:30 - 20:00"],
+        ["Next Blaby", "Johns Court, Blaby, Leicester, LE8 4DJ", "Open today: 09:00 - 18:00"]
+      ],
+      parcelshop: [
+        ["Mercury News", "5-7 Mill Lane, Enderby, LE19 4NW", "Open today: 08:00 - 20:00"],
+        ["Evri Locker", "D&R News Ltd-Mercury News Shop, 5-7 Mill Lane, Enderby, LE19 4NW", "Open today: 24 hours"],
+        ["COSTCUTTER", "110 Forest Road, Narborough, LE19 3EQ", "Open today: 07:00 - 22:00"]
+      ]
+    };
+    const pickupCopy = {
+      home: {
+        question: "Where would you like us to deliver your order?",
+        label: "Address Line 1",
+        placeholder: "Start typing your address and pick from the list"
+      },
+      collection: {
+        question: "Where would you like to collect your order?",
+        label: "Find a store",
+        placeholder: "Start typing a store name or postcode"
+      },
+      parcelshop: {
+        question: "Where would you like to collect your order?",
+        label: "Find a parcelshop",
+        placeholder: "Start typing a parcelshop name or postcode"
+      }
+    };
+    const entryForm = document.querySelector(".single-entry-form");
+    const identifier = document.querySelector("#single-identifier");
+    const accountMatch = document.querySelector("[data-single-account-match]");
+    const otpPanel = document.querySelector("[data-single-otp-panel]");
+    const detailsForm = document.querySelector("[data-single-details-form]");
+    const detailsEmail = document.querySelector("#single-email");
+    const deliveryForm = document.querySelector("[data-single-delivery-form]");
+    const deliveryInput = document.querySelector("#single-address-line-1");
+    const deliveryLabel = document.querySelector("[data-single-delivery-label]");
+    const deliveryQuestion = document.querySelector("[data-single-delivery-question]");
+    const suggestions = document.querySelector("#single-address-suggestions");
+    const pickupList = document.querySelector("[data-single-pickup-list]");
+    const deliverySubmit = document.querySelector("[data-single-delivery-submit]");
+    const datePrompt = document.querySelector("[data-single-date-prompt]");
+    const datePlaceholder = document.querySelector("[data-single-date-placeholder]");
+    const billingSame = document.querySelector("#single-use-delivery-address");
+    const billingFields = document.querySelector("[data-single-billing-fields]");
+    const appleToast = document.querySelector("[data-single-apple-toast]");
+    let deliveryType = sessionStorage.getItem("deliveryType") || "home";
+    let selectedPickup = "";
+    let countdownTimer;
+    let homeAutoSubmitTimer;
+    let homeAutoSubmitSignature = "";
+    let homeDatesLoading = false;
+
+    function reveal(sectionName, shouldScroll = true) {
+      Object.entries(sections).forEach(([name, section]) => {
+        if (!section) {
+          return;
+        }
+        if (name === "entry") {
+          section.hidden = false;
+          return;
+        }
+        section.hidden = name === "complete" ? sectionName !== "complete" : false;
+      });
+      if (shouldScroll && sections[sectionName]) {
+        scrollToStep(`[data-single-section='${sectionName}']`);
+      }
+    }
+
+    function saveDetails() {
+      const first = document.querySelector("#single-first-name")?.value.trim() || "Alex";
+      const last = document.querySelector("#single-last-name")?.value.trim() || "Smith";
+      const email = detailsEmail?.value.trim() || identifier?.value.trim() || "alex_smith@gmail.com";
+      sessionStorage.setItem("checkoutEmail", email);
+      sessionStorage.setItem("checkoutFirstName", first);
+      sessionStorage.setItem("checkoutLastName", last);
+      sessionStorage.setItem("checkoutName", `${first} ${last}`.trim());
+    }
+
+    function seedRecognisedCustomer() {
+      sessionStorage.setItem("checkoutIdentifier", "alex_smith@gmail.com");
+      sessionStorage.setItem("checkoutEmail", "alex_smith@gmail.com");
+      sessionStorage.setItem("checkoutFirstName", "Alex");
+      sessionStorage.setItem("checkoutLastName", "Smith");
+      sessionStorage.setItem("checkoutName", "Alex Smith");
+      sessionStorage.setItem("accountMatchedSignin", "true");
+      sessionStorage.setItem("deliveryType", "home");
+      sessionStorage.setItem("deliveryAddressLabel", "12 Mill Hill, Enderby, Leicester, LE19 4AD");
+      sessionStorage.setItem("deliveryAddressLine1", "12 Mill Hill");
+      sessionStorage.setItem("deliveryAddressLine2", "Enderby");
+      sessionStorage.setItem("deliveryTownCity", "Leicester");
+      sessionStorage.setItem("deliveryPostcode", "LE19 4AD");
+      sessionStorage.setItem("deliveryDateLabel", "Wednesday 12th July");
+      updateOrderLedger("home");
+      if (detailsEmail) detailsEmail.value = "alex_smith@gmail.com";
+      setInputValue("#single-first-name", "Alex");
+      setInputValue("#single-last-name", "Smith");
+      populateHomeAddress("12 Mill Hill, Enderby, Leicester, LE19 4AD");
+    }
+
+    function recognised(value) {
+      return value.trim().toLowerCase() === "recognised@email.com";
+    }
+
+    function renderAddressSuggestions() {
+      if (!suggestions || !deliveryInput || deliveryType !== "home") {
+        return;
+      }
+      const query = deliveryInput.value.trim().toLowerCase();
+      suggestions.innerHTML = "";
+      deliveryInput.setAttribute("aria-expanded", "false");
+      if (!query) {
+        return;
+      }
+      knownAddresses
+        .filter((address) => address.toLowerCase().startsWith(query))
+        .forEach((address) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = address;
+          button.addEventListener("click", () => {
+            populateHomeAddress(address);
+            suggestions.innerHTML = "";
+            deliveryInput.setAttribute("aria-expanded", "false");
+            queueAutoHomeSubmit();
+          });
+          suggestions.appendChild(button);
+          deliveryInput.setAttribute("aria-expanded", "true");
+        });
+    }
+
+    function populateHomeAddress(address, shouldShowDates = false) {
+      const parts = address.split(",").map((part) => part.trim());
+      setInputValue("#single-address-line-1", parts[0] || "");
+      setInputValue("#single-address-line-2", parts[1] || "");
+      setInputValue("#single-town-city", parts[2] || "");
+      setInputValue("#single-postcode", parts[3] || "");
+      sessionStorage.setItem("deliveryAddressLabel", address);
+      sessionStorage.setItem("deliveryAddressLine1", parts[0] || "");
+      sessionStorage.setItem("deliveryAddressLine2", parts[1] || "");
+      sessionStorage.setItem("deliveryTownCity", parts[2] || "");
+      sessionStorage.setItem("deliveryPostcode", parts[3] || "");
+      if (shouldShowDates) {
+        renderInlineDatePicker();
+      }
+    }
+
+    function homeFieldValues() {
+      return {
+        line1: document.querySelector("#single-address-line-1")?.value.trim() || "",
+        line2: document.querySelector("#single-address-line-2")?.value.trim() || "",
+        town: document.querySelector("#single-town-city")?.value.trim() || "",
+        postcode: document.querySelector("#single-postcode")?.value.trim() || "",
+        phone: document.querySelector("#single-phone-number")?.value.trim() || ""
+      };
+    }
+
+    function homeFieldsAreComplete() {
+      const values = homeFieldValues();
+      return Boolean(values.line1 && values.town && values.postcode && values.phone);
+    }
+
+    function persistHomeFields() {
+      const values = homeFieldValues();
+      const address = [values.line1, values.line2, values.town, values.postcode].filter(Boolean).join(", ");
+      sessionStorage.setItem("deliveryAddressLabel", address);
+      sessionStorage.setItem("deliveryAddressLine1", values.line1);
+      sessionStorage.setItem("deliveryAddressLine2", values.line2);
+      sessionStorage.setItem("deliveryTownCity", values.town);
+      sessionStorage.setItem("deliveryPostcode", values.postcode);
+      sessionStorage.setItem("deliveryPhoneNumber", values.phone);
+      return address;
+    }
+
+    function submitHomeDeliveryForDates() {
+      if (deliveryType !== "home" || !homeFieldsAreComplete() || homeDatesLoading) {
+        return;
+      }
+      const signature = JSON.stringify(homeFieldValues());
+      if (signature === homeAutoSubmitSignature) {
+        return;
+      }
+      homeAutoSubmitSignature = signature;
+      homeDatesLoading = true;
+      const address = persistHomeFields();
+      document.querySelector("[data-single-deliver-to]").textContent = address;
+      showDeliveryState("loading");
+      window.setTimeout(() => {
+        renderInlineDatePicker();
+        document.querySelector("[data-single-dates-label]").textContent = "Deliver to:";
+        document.querySelector("[data-single-dates-address]").textContent = address;
+        document.querySelector("[data-single-change-pickup]").hidden = true;
+        homeDatesLoading = false;
+        showDeliveryState("dates");
+      }, 2000);
+    }
+
+    function queueAutoHomeSubmit() {
+      if (deliveryType !== "home") {
+        return;
+      }
+      window.clearTimeout(homeAutoSubmitTimer);
+      if (!homeFieldsAreComplete()) {
+        renderInlineDatePlaceholder();
+        return;
+      }
+      homeAutoSubmitTimer = window.setTimeout(submitHomeDeliveryForDates, 350);
+    }
+
+    function renderInlineDatePlaceholder() {
+      if (!datePrompt || !datePlaceholder) {
+        return;
+      }
+      datePrompt.hidden = false;
+      datePlaceholder.className = "single-date-placeholder";
+      datePlaceholder.textContent = "Enter a delivery address to view available dates";
+    }
+
+    function renderInlineDatePicker() {
+      if (!datePrompt || !datePlaceholder) {
+        return;
+      }
+      datePrompt.hidden = false;
+      datePlaceholder.className = "single-date-picker";
+      datePlaceholder.innerHTML = `
+        <div class="date-options" role="radiogroup" aria-label="Available delivery dates">
+          <label class="date-chip is-selected"><input type="radio" name="single-inline-date" value="Wednesday 12th July" checked><span>Wed</span><strong>12</strong><small>Jul</small></label>
+          <label class="date-chip"><input type="radio" name="single-inline-date" value="Thursday 13th July"><span>Thu</span><strong>13</strong><small>Jul</small></label>
+          <label class="date-chip"><input type="radio" name="single-inline-date" value="Friday 14th July"><span>Fri</span><strong>14</strong><small>Jul</small></label>
+        </div>
+      `;
+      datePlaceholder.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("change", () => {
+          datePlaceholder.querySelectorAll(".date-chip").forEach((chip) => chip.classList.remove("is-selected"));
+          input.closest(".date-chip")?.classList.add("is-selected");
+          sessionStorage.setItem("deliveryDateLabel", input.value);
+        });
+      });
+      sessionStorage.setItem("deliveryDateLabel", "Wednesday 12th July");
+    }
+
+    function syncDeliveryType(type) {
+      deliveryType = type;
+      sessionStorage.setItem("deliveryType", type);
+      updateOrderLedger(type);
+      document.querySelectorAll("input[name='single-delivery-type']").forEach((input) => {
+        input.checked = input.value === type;
+        input.closest(".delivery-option")?.classList.toggle("is-selected", input.checked);
+      });
+      const copy = pickupCopy[type] || pickupCopy.home;
+      if (deliveryQuestion) deliveryQuestion.textContent = copy.question;
+      if (deliveryLabel) deliveryLabel.innerHTML = `${copy.label} <span class="required">*</span>`;
+      const hasCompleteHomeAddress = storedValue("deliveryAddressLine1") && storedValue("deliveryTownCity") && storedValue("deliveryPostcode") && storedValue("deliveryPhoneNumber");
+      if (deliveryInput) {
+        deliveryInput.placeholder = copy.placeholder;
+        deliveryInput.value = type === "home" && hasCompleteHomeAddress ? storedValue("deliveryAddressLine1") : "";
+      }
+      document.querySelectorAll("[data-single-home-field]").forEach((field) => {
+        field.hidden = type !== "home";
+      });
+      if (deliverySubmit) {
+        deliverySubmit.hidden = type === "home";
+      }
+      if (datePrompt) {
+        datePrompt.hidden = type !== "home";
+      }
+      if (type === "home") {
+        if (hasCompleteHomeAddress) {
+          renderInlineDatePicker();
+        } else {
+          renderInlineDatePlaceholder();
+        }
+      }
+      document.querySelectorAll("[data-single-delivery-state]").forEach((state) => {
+        state.hidden = true;
+      });
+      deliveryForm.hidden = false;
+      syncBillingAddressRule();
+    }
+
+    function renderPickupResults() {
+      if (!pickupList) {
+        return;
+      }
+      const locations = pickupLocations[deliveryType] || pickupLocations.collection;
+      pickupList.innerHTML = locations.map((location, index) => `
+        <label class="collection-store${index === 0 ? " is-selected" : ""}">
+          <input type="radio" name="singlePickupLocation" value="${index}" ${index === 0 ? "checked" : ""}>
+          <span class="radio-dot" aria-hidden="true"></span>
+          <span class="collection-store-copy">
+            <strong>${location[0]}</strong>
+            <small>${location[1]}</small>
+            <small>${location[2]}</small>
+          </span>
+        </label>
+      `).join("");
+      selectedPickup = `${locations[0][0]}, ${locations[0][1]}`;
+      pickupList.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("change", () => {
+          pickupList.querySelectorAll(".collection-store").forEach((store) => store.classList.remove("is-selected"));
+          input.closest(".collection-store")?.classList.add("is-selected");
+          const location = locations[Number(input.value)];
+          selectedPickup = `${location[0]}, ${location[1]}`;
+        });
+      });
+      const title = document.querySelector("[data-single-pickup-results-title]");
+      const summary = document.querySelector("[data-single-pickup-results-summary]");
+      if (title) title.innerHTML = deliveryType === "parcelshop" ? "Select a parcelshop <span class=\"required\">*</span>" : "Select a collection store <span class=\"required\">*</span>";
+      if (summary) summary.textContent = deliveryType === "parcelshop" ? "Parcelshops near your search" : "Stores near your search";
+    }
+
+    function showDeliveryState(state) {
+      deliveryForm.hidden = true;
+      document.querySelectorAll("[data-single-delivery-state]").forEach((panel) => {
+        panel.hidden = panel.dataset.singleDeliveryState !== state;
+      });
+    }
+
+    function completeDeliverySelection() {
+      const address = deliveryType === "home"
+        ? [
+            document.querySelector("#single-address-line-1")?.value,
+            document.querySelector("#single-address-line-2")?.value,
+            document.querySelector("#single-town-city")?.value,
+            document.querySelector("#single-postcode")?.value
+          ].filter(Boolean).join(", ")
+        : selectedPickup;
+      if (address) {
+        sessionStorage.setItem("deliveryAddressLabel", address);
+      }
+      sessionStorage.setItem("deliveryDateLabel", document.querySelector("input[name='single-inline-date']:checked")?.value || document.querySelector("input[name='single-date']:checked")?.value || "Wednesday 12th July");
+      reveal("payment");
+    }
+
+    function syncBillingAddressRule() {
+      if (!billingSame || !billingFields) {
+        return;
+      }
+      const isPickup = deliveryType !== "home";
+      if (isPickup) {
+        billingSame.checked = false;
+        billingSame.disabled = true;
+      } else {
+        billingSame.disabled = false;
+      }
+      billingFields.hidden = billingSame.checked;
+      billingSame.closest(".card-checkbox")?.classList.toggle("is-disabled", billingSame.disabled);
+      billingSame.closest(".card-checkbox")?.classList.toggle("is-checked", billingSame.checked);
+    }
+
+    function showOrderComplete(emailOverride) {
+      const email = emailOverride || sessionStorage.getItem("checkoutEmail") || "alex_smith@gmail.com";
+      const name = sessionStorage.getItem("checkoutName") || "Alex Smith";
+      const address = sessionStorage.getItem("deliveryAddressLabel") || "12 Mill Hill, Enderby, Leicester, LE19 4AD";
+      const date = sessionStorage.getItem("deliveryDateLabel") || "Wednesday 12th July";
+      document.querySelector("[data-single-complete-email]").textContent = email;
+      document.querySelector("[data-single-complete-name]").textContent = name;
+      document.querySelector("[data-single-complete-address]").innerHTML = address.split(",").map((part) => `<span>${part.trim()}</span>`).join("");
+      document.querySelector("[data-single-complete-delivery-type]").textContent = deliveryType === "home" ? "Home Delivery" : deliveryType === "collection" ? "Collection" : "Parcelshop";
+      document.querySelector("[data-single-complete-delivery-lines]").innerHTML = `<span>${deliveryType === "home" ? "Next Day Delivery" : "Ready to collect"}</span><span>${date}</span><span>(Anytime)</span>`;
+      const matched = sessionStorage.getItem("accountMatchedSignin") === "true";
+      document.querySelector("[data-single-signup-panel]").hidden = matched;
+      document.querySelector("[data-single-passkey-panel]").hidden = !matched;
+      reveal("complete");
+      startSingleCountdown();
+    }
+
+    function startSingleCountdown() {
+      const countdown = document.querySelector("[data-single-countdown]");
+      if (!countdown) {
+        return;
+      }
+      const digits = countdown.querySelectorAll("span");
+      const started = Date.now();
+      window.clearInterval(countdownTimer);
+      function tick() {
+        const secondsLeft = Math.max(0, 1800 - Math.floor((Date.now() - started) / 1000));
+        const minutes = Math.floor(secondsLeft / 60);
+        const seconds = secondsLeft % 60;
+        const value = `${String(minutes).padStart(2, "0")}${String(seconds).padStart(2, "0")}`;
+        digits.forEach((digit, index) => {
+          digit.textContent = value[index];
+        });
+      }
+      tick();
+      countdownTimer = window.setInterval(tick, 1000);
+    }
+
+    identifier?.addEventListener("input", () => {
+      if (recognised(identifier.value)) {
+        accountMatch.hidden = false;
+        if (detailsEmail) detailsEmail.value = identifier.value.trim();
+      }
+    });
+    entryForm?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (recognised(identifier.value)) {
+        accountMatch.hidden = false;
+        scrollToStep("[data-single-account-match]");
+      } else {
+        if (detailsEmail) detailsEmail.value = identifier.value.trim();
+        reveal("details");
+      }
+    });
+    document.querySelector("[data-single-guest]")?.addEventListener("click", () => reveal("details"));
+    document.querySelector("[data-single-account-signin]")?.addEventListener("click", () => {
+      seedRecognisedCustomer();
+      reveal("payment");
+    });
+    document.querySelector("[data-single-otp-trigger]")?.addEventListener("click", () => {
+      otpPanel.hidden = false;
+      scrollToStep("[data-single-otp-panel]");
+    });
+    document.querySelector("[data-single-otp-continue]")?.addEventListener("click", () => {
+      seedRecognisedCustomer();
+      reveal("payment");
+    });
+    document.querySelector("[data-single-password-toggle]")?.addEventListener("click", (event) => {
+      const password = document.querySelector("#single-account-password");
+      const show = password.type === "password";
+      password.type = show ? "text" : "password";
+      event.currentTarget.textContent = show ? "HIDE" : "SHOW";
+    });
+    detailsEmail?.addEventListener("input", () => {
+      if (recognised(detailsEmail.value)) {
+        if (identifier) identifier.value = detailsEmail.value.trim();
+        accountMatch.hidden = false;
+      }
+    });
+    detailsForm?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      saveDetails();
+      reveal("delivery");
+    });
+    document.querySelectorAll("input[name='single-delivery-type']").forEach((input) => {
+      input.addEventListener("change", () => syncDeliveryType(input.value));
+    });
+    deliveryInput?.addEventListener("input", renderAddressSuggestions);
+    ["#single-address-line-1", "#single-address-line-2", "#single-town-city", "#single-postcode", "#single-phone-number"].forEach((selector) => {
+      document.querySelector(selector)?.addEventListener("input", queueAutoHomeSubmit);
+    });
+    deliveryForm?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (deliveryType === "home") {
+        submitHomeDeliveryForDates();
+      } else {
+        renderPickupResults();
+        showDeliveryState("loading");
+        window.setTimeout(() => showDeliveryState("pickup-results"), 2000);
+      }
+    });
+    document.querySelector("[data-single-pickup-continue]")?.addEventListener("click", () => {
+      showDeliveryState("loading");
+      window.setTimeout(() => {
+        document.querySelector("[data-single-dates-label]").textContent = deliveryType === "parcelshop" ? "Collect from parcelshop:" : "Collect from:";
+        document.querySelector("[data-single-dates-address]").textContent = selectedPickup;
+        document.querySelector("[data-single-change-pickup]").hidden = false;
+        showDeliveryState("dates");
+      }, 2000);
+    });
+    document.querySelector("[data-single-change-pickup]")?.addEventListener("click", () => showDeliveryState("pickup-results"));
+    document.querySelector("[data-single-delivery-continue]")?.addEventListener("click", completeDeliverySelection);
+    document.querySelectorAll("input[name='single-date']").forEach((input) => {
+      input.addEventListener("change", () => {
+        document.querySelectorAll(".date-chip").forEach((chip) => chip.classList.remove("is-selected"));
+        input.closest(".date-chip")?.classList.add("is-selected");
+      });
+    });
+    billingSame?.addEventListener("change", syncBillingAddressRule);
+    document.querySelector("[data-single-pay-now]")?.addEventListener("click", () => {
+      saveDetails();
+      showOrderComplete();
+    });
+    document.querySelector("[data-single-details-toggle]")?.addEventListener("click", (event) => {
+      const details = document.querySelector("[data-single-complete-details]");
+      const open = details.hidden;
+      details.hidden = !open;
+      event.currentTarget.textContent = open ? "Hide Details" : "Show Details";
+      event.currentTarget.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    document.querySelector("[data-single-apple-pay]")?.addEventListener("click", () => {
+      appleToast.hidden = false;
+    });
+    document.querySelector("[data-single-apple-complete]")?.addEventListener("click", () => {
+      sessionStorage.setItem("checkoutEmail", "apple_pay_customer@example.com");
+      sessionStorage.setItem("checkoutName", "Apple Pay Customer");
+      sessionStorage.setItem("accountMatchedSignin", "false");
+      sessionStorage.setItem("deliveryType", "home");
+      sessionStorage.setItem("deliveryAddressLabel", sessionStorage.getItem("deliveryAddressLabel") || "12 Mill Hill, Enderby, Leicester, LE19 4AD");
+      appleToast.hidden = true;
+      updateOrderLedger("home");
+      showOrderComplete("apple_pay_customer@example.com");
+    });
+
+    setInputValue("#single-email", storedValue("checkoutEmail"));
+    setInputValue("#single-first-name", storedValue("checkoutFirstName"));
+    setInputValue("#single-last-name", storedValue("checkoutLastName"));
+    setInputValue("#single-address-line-1", storedValue("deliveryAddressLine1"));
+    setInputValue("#single-address-line-2", storedValue("deliveryAddressLine2"));
+    setInputValue("#single-town-city", storedValue("deliveryTownCity"));
+    setInputValue("#single-postcode", storedValue("deliveryPostcode"));
+    setInputValue("#single-phone-number", storedValue("deliveryPhoneNumber"));
+    syncDeliveryType(deliveryType);
+  }
+
   normaliseInternalPageLinks();
 
   if (page === "signin-register") {
@@ -1284,6 +1805,10 @@
 
   if (page === "order-complete") {
     initOrderComplete();
+  }
+
+  if (page === "single-page") {
+    initSinglePage();
   }
 
   updateOrderLedger();
