@@ -93,7 +93,7 @@
               </div>
 
               <div class="field-row delivery-detail-field" data-delivery-detail-field>
-                <label for="address-line-2">Address Line 2 <span class="required">*</span></label>
+                <label for="address-line-2">Address Line 2</label>
                 <input class="text-input" id="address-line-2" name="addressLine2" type="text" autocomplete="address-line2" required>
               </div>
 
@@ -280,7 +280,10 @@
             <div class="delivery-review" data-delivery-state="dates" hidden>
               <div class="deliver-to">
                 <strong>Deliver to:</strong>
-                <p data-deliver-to>12 Mill Hill, Enderby, Leicester, LE19 4AD</p>
+                <div class="collect-from-row delivery-address-row">
+                  <p data-deliver-to>12 Mill Hill, Enderby, Leicester, LE19 4AD</p>
+                  <button class="text-link collect-from-change" type="button" data-change-delivery-address>Change</button>
+                </div>
               </div>
 
               <section class="parcel-picker" aria-labelledby="parcel-title">

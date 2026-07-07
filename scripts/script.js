@@ -352,6 +352,7 @@
     const deliveryQuestion = document.querySelector(".delivery-question");
     const collectionContinue = document.querySelector("[data-collection-continue]");
     const changeCollectionStore = document.querySelector("[data-change-collection-store]");
+    const changeDeliveryAddress = document.querySelector("[data-change-delivery-address]");
     const collectionResultsTitle = document.querySelector("#collection-results-title");
     const collectionResultsSummary = document.querySelector(".collection-results-summary");
     const collectionStoreList = document.querySelector(".collection-store-list");
@@ -764,6 +765,19 @@
         showDeliveryState("collection-results");
         initCollectionStorePicker();
         scrollToStep(".delivery-step");
+      });
+    }
+
+    if (changeDeliveryAddress) {
+      changeDeliveryAddress.addEventListener("click", () => {
+        clearTimeout(deliveryTimer);
+        sessionStorage.removeItem("deliveryStage");
+        showDeliveryState("address");
+        syncDeliveryTypeLayout();
+        scrollToStep(".delivery-step");
+        window.requestAnimationFrame(() => {
+          addressInput.focus();
+        });
       });
     }
 
