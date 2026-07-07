@@ -91,7 +91,10 @@
 
               <div class="field-row">
                 <label class="optional-label" for="password"><span>Password</span> <em>Optional</em></label>
-                <input class="text-input" id="password" name="password" type="password" autocomplete="new-password">
+                <div class="password-toggle-row">
+                  <input class="text-input" id="password" name="password" type="password" autocomplete="new-password">
+                  <button class="btn btn-secondary password-toggle-button" type="button" data-password-toggle aria-controls="password" aria-pressed="false">SHOW</button>
+                </div>
                 <p class="helper-text">Enter a password to check out faster next time by creating an account</p>
               </div>
 

@@ -65,6 +65,32 @@
     });
   }
 
+  function initPasswordToggles() {
+    document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+      if (button.dataset.passwordToggleReady === "true") {
+        return;
+      }
+
+      const inputId = button.getAttribute("aria-controls");
+      const input = inputId ? document.getElementById(inputId) : button.previousElementSibling;
+      if (!input) {
+        return;
+      }
+
+      button.dataset.passwordToggleReady = "true";
+      input.type = "password";
+      button.textContent = "SHOW";
+      button.setAttribute("aria-pressed", "false");
+
+      button.addEventListener("click", () => {
+        const isVisible = input.type === "text";
+        input.type = isVisible ? "password" : "text";
+        button.textContent = isVisible ? "SHOW" : "HIDE";
+        button.setAttribute("aria-pressed", isVisible ? "false" : "true");
+      });
+    });
+  }
+
   function setInputValue(selector, value) {
     const input = document.querySelector(selector);
     if (input && value) {
@@ -1796,6 +1822,7 @@
   }
 
   normaliseInternalPageLinks();
+  initPasswordToggles();
 
   if (page === "signin-register") {
     initSignin();

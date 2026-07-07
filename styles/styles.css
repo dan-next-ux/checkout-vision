@@ -899,6 +899,34 @@ a {
   color: var(--components-button-outlined-secondary-enabled-contrast-text-color, #000);
 }
 
+.password-toggle-row {
+  display: flex;
+  width: 100%;
+}
+
+.password-toggle-row .text-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.password-toggle-row .password-toggle-button {
+  flex: 0 0 89px;
+  width: 89px;
+  min-height: 44px;
+  border-color: var(--components-button-outlined-secondary-enabled-border-color, #000);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background: var(--components-button-outlined-secondary-enabled-background-color, #fff);
+  color: var(--components-button-outlined-secondary-enabled-contrast-text-color, #000);
+}
+
+.password-toggle-row:focus-within .text-input,
+.password-toggle-row:focus-within .password-toggle-button {
+  border-color: var(--action-default-selected-border-color);
+}
+
 .account-forgotten {
   color: var(--text-primary);
   font-family: "Next Display", Arial, sans-serif;
