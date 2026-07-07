@@ -250,7 +250,6 @@ a {
 .single-page-main > .checkout-step,
 .single-page-main > .order-complete-hero {
   border-bottom: 1px solid var(--components-divider-default-border-color, #eee);
-  padding: 16px;
 }
 
 .single-entry-step h2,
@@ -450,10 +449,7 @@ a {
 }
 
 @media (max-width: 480px) {
-  .single-page-main > .checkout-step,
-  .single-page-main > .order-complete-hero {
-    padding: 16px;
-  }
+
 
   .single-apple-toast {
     align-items: stretch;
